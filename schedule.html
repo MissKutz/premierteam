@@ -398,7 +398,6 @@
 
         const MEMBRES_DATA = [
             { id: "morgane", nom: "Morgane", surnom: "MK", mdp: "14022019", mdp_admin: "Admin_mk_11" },
-            { id: "enzo", nom: "Enzo", surnom: "Misu", mdp: "2323", mdp_admin: "Admin_misu_12" },
             { id: "jules", nom: "Jules", surnom: "FDM", mdp: "julesf0128" },
             { id: "sebastien", nom: "Sébastien", surnom: "Pollux", mdp: "Honda06+" },
             { id: "orphee", nom: "Orphée", surnom: "Orphée", mdp: "jemeraivoiralexiaenrobedechambre69" },
@@ -717,7 +716,9 @@
             // Corps
             tbody.innerHTML = "";
             const snapshot = await getDocs(collection(db, "membres"));
-            const membres = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            const membres = snapshot.docs
+                .map(d => ({ id: d.id, ...d.data() }))
+                .filter(m => MEMBRES_DATA.some(x => x.id === m.id));
             membres.sort((a, b) => MEMBRES_DATA.findIndex(m => m.id === a.id) - MEMBRES_DATA.findIndex(m => m.id === b.id));
 
             for (const membre of membres) {
