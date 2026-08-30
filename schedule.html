@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDT - Team Premier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            background: linear-gradient(100deg, #000000, #764ba2, #7c3b68);
+            color: #fff;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin: 0 0 1rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+        th, td {
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+        td {
+            min-height: 60px;
+        }
+        .back-btn, .btn {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .back-btn:hover, .btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        #authZone {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 1400px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+        #mdpInput {
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+            margin-right: 10px;
+            width: 200px;
+        }
+        #mdpInput::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        #loginError {
+            color: #ff6b6b;
+            margin-top: 10px;
+        }
+
+        .edt-perso-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .edt-perso-table th,
+        .edt-perso-table td {
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px;
+            text-align: center;
+        }
+        .edt-perso-table th {
+            background: rgba(255,255,255,0.2);
+            font-weight: bold;
+        }
+        .contrainte-select, .contrainte-input-text {
+            display: block;
+            margin-top: 4px;
+            padding: 4px 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 0.75rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .contrainte-input-text::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+        .save-indicator {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-left: 10px;
+        }
+        #generalTableHead th:nth-child(2),
+        #generalTableHead th:nth-child(3),
+        #generalTableBody td:nth-child(2),
+        #generalTableBody td:nth-child(3) {
+            width: 60px;
+            min-width: 60px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            background: transparent;
+            border-radius: 0;
+            border: none;
+        }
+
+        .header-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 0;
+            background: transparent;
+            padding: 0;
+            transition: transform 0.3s;
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header-logo-left {
+            order: 1;
+        }
+
+        .header-logo-right {
+            order: 3;
+        }
+
+        h1 {
+            order: 2;
+            text-align: center;
+            margin: 0;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .header-logo-left,
+            .header-logo-right {
+                order: 2;
+            }
+
+            .header-logo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            h1 {
+                order: 1;
+                font-size: 1.5rem;
+                margin: 0.5rem 0;
+            }
+
+            body {
+                padding: 10px;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            .container {
+                padding: 0 5px;
+            }
+
+            #authZone {
+                padding: 10px;
+                margin: 10px auto;
+            }
+
+            #mdpInput {
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto 10px auto;
+                display: block;
+                box-sizing: border-box;
+            }
+
+            .btn, .back-btn {
+                font-size: 0.85rem;
+                padding: 8px 12px;
+                margin: 4px;
+            }
+
+            th, td {
+                padding: 6px 4px;
+                font-size: 0.75rem;
+                white-space: nowrap;
+            }
+
+            #generalTableHead th {
+                font-size: 0.7rem;
+            }
+
+            .edt-perso-table th,
+            .edt-perso-table td {
+                padding: 4px 2px;
+                font-size: 0.65rem;
+            }
+
+            .contrainte-select, .contrainte-input-text {
+                font-size: 0.6rem;
+                padding: 2px 4px;
+                width: 100%;
+                min-width: 60px;
+                box-sizing: border-box;
+            }
+
+            #calendrierInfos {
+                font-size: 0.75rem !important;
+                padding: 8px !important;
+            }
+
+            .save-indicator {
+                font-size: 0.75rem;
+                display: block;
+                margin: 5px 0;
+            }
+
+            #navGeneral div[style*="flex"],
+            #navPerso div[style*="flex"] {
+                gap: 8px !important;
+                flex-wrap: wrap !important;
+            }
+
+            .week-label {
+                font-size: 0.9rem !important;
+                min-width: 150px !important;
+            }
+
+            .roulette-display {
+                font-size: 0.65rem !important;
+            }
+
+            #edtPersonnelContainer > div {
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+
+            #edtPersonnelContainer > div > div {
+                min-width: unset !important;
+                width: 100% !important;
+                text-align: center !important;
+                padding-top: 10px !important;
+            }
+
+            .edt-perso-table {
+                font-size: 0.7rem;
+            }
+
+            .edt-perso-table th,
+            .edt-perso-table td {
+                padding: 4px 2px;
+            }
+
+            .edt-perso-table td div[style*="width: 24px"],
+            .edt-perso-table td div[style*="width: 20px"] {
+                width: 18px !important;
+                height: 18px !important;
+            }
+
+            #calendrierInfos span {
+                display: inline-block;
+                margin: 2px 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="authZone">
+        <div id="stateButton">
+            <button class="btn" id="btnModifier">Modifier votre présence</button>
+        </div>
+        <div id="stateLogin" style="display:none;">
+            <input type="password" id="mdpInput" placeholder="Mot de passe">
+            <button class="btn" id="btnValider">Valider</button>
+            <button class="btn btn-secondary" id="btnFermerLogin">Fermer</button>
+            <p id="loginError"></p>
+        </div>
+        <div id="stateEdt" style="display:none;">
+            <div id="navPerso"></div>
+            <div id="edtPersonnelContainer"></div>
+            <div style="margin-top:15px;">
+                <span class="save-indicator" id="saveIndicator"></span>
+                <button class="btn btn-secondary" id="btnDeconnexion">Se déconnecter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remplacer la ligne 161-162 -->
+    <div class="header-container">
+        <img src="img/image.teampremier.webp" alt="Team Premier Logo" class="header-logo header-logo-left">
+        <h1>Emploi du Temps</h1>
+        <img src="img/image.teampremier.webp" alt="Team Premier Logo" class="header-logo header-logo-right">
+    </div>
+        <div id="navGeneral"></div>
+        <div class="table-scroll">
+        <table>
+            <thead id="generalTableHead">
+                <!-- Généré par JS -->
+            </thead>
+            <tbody id="generalTableBody">
+                <!-- Généré par JS -->
+            </tbody>
+        </table>
+        </div>
+        <div id="calendrierInfos" style="margin-top:15px; text-align:center; font-size:0.95rem; background:rgba(255,255,255,0.05); padding:12px; border-radius:8px;">
+            <span style="color:#ff0000; font-weight:bold;">Match</span> : jeudi, samedi, dimanche &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span style="color:#FF9800; font-weight:bold;">Entraînement</span> : mercredi, vendredi
+        </div>
+        <div style="text-align:center;">
+            <a href="index.html" class="back-btn">Retour à l'accueil</a>
+        </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getFirestore, collection, doc, getDocs, setDoc, getDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBTkuOD4jnR3tvmkAxKR5UM0nB6RNqWC1M",
+            authDomain: "premierteam-plouf.firebaseapp.com",
+            projectId: "premierteam-plouf",
+            storageBucket: "premierteam-plouf.firebasestorage.app",
+            messagingSenderId: "511246296521",
+            appId: "1:511246296521:web:2f4b07c682ee25dd6d3418"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const JOURS = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"];
+        const CALENDRIER = [
+            { jour: "Lu", horaire: "&mdash;", type: "off" },
+            { jour: "Ma", horaire: "&mdash;", type: "off" },
+            { jour: "Me", horaire: "19h-20h", type: "entrainement" },
+            { jour: "Je", horaire: "19h-20h", type: "match" },
+            { jour: "Ve", horaire: "20h-21h", type: "entrainement" },
+            { jour: "Sa", horaire: "20h-21h", type: "match" },
+            { jour: "Di", horaire: "19h-20h", type: "match" }
+        ];
+        const NOMS_JOURS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+
+        const MEMBRES_DATA = [
+            { id: "morgane", nom: "Morgane", surnom: "MK", mdp: "14022019", mdp_admin: "Admin_mk_11" },
+            { id: "enzo", nom: "Enzo", surnom: "Misu", mdp: "2323", mdp_admin: "Admin_misu_12" },
+            { id: "jules", nom: "Jules", surnom: "FDM", mdp: "julesf0128" },
+            { id: "sebastien", nom: "Sébastien", surnom: "Pollux", mdp: "Honda06+" },
+            { id: "orphee", nom: "Orphée", surnom: "Orphée", mdp: "jemeraivoiralexiaenrobedechambre69" },
+            { id: "octave", nom: "Octave", surnom: "sacadUwU", mdp: "motdepasse.1" },
+            { id: "clement", nom: "Clément", surnom: "Clemrsse", mdp: "clemrsse123" }
+        ];
+
+        let weekOffset = 0;
+
+        async function seedFirestore() {
+            try {
+                const snapshot = await getDocs(collection(db, "membres"));
+                if (snapshot.size > 0) return;
+
+                for (const m of MEMBRES_DATA) {
+                    let edt = {};
+                    const semaineKey = getWeekKey(0);
+                    edt[semaineKey] = {};
+                    for (const jour of JOURS) {
+                        edt[semaineKey][jour] = { statut: "absent_reponse", contrainte: "" };
+                    }
+                    await setDoc(doc(db, "membres", m.id), {
+                        nom: m.nom,
+                        mdp: m.mdp,
+                            ...(m.mdp_admin ? { mdp_admin: m.mdp_admin } : {}),
+                        role: "principal",
+                        edt
+                    });
+                }
+                console.log("Firestore peupl\u00e9 avec les 7 membres");
+            } catch (e) {
+                console.error("Erreur seed Firestore :", e);
+            }
+        }
+        seedFirestore();
+
+        async function migrerEdtSiNecessaire() {
+            const snapshot = await getDocs(collection(db, "membres"));
+            const semaineKey = getWeekKey(0);
+            for (const d of snapshot.docs) {
+                const data = d.data();
+                if (!data.edt) continue;
+                const hasNewFormat = Object.keys(data.edt).some(k => /^\d{4}-\d{2}-\d{2}$/.test(k));
+                // Si edt a des clés comme "lundi", "mardi"... (ancien format) et PAS de nouveau format
+                if (!hasNewFormat && data.edt.lundi && typeof data.edt.lundi === "object" && data.edt.lundi.statut) {
+                    const newEdt = { [semaineKey]: {} };
+                    for (const jour of JOURS) {
+                        newEdt[semaineKey][jour] = data.edt[jour] || { statut: "absent_reponse", contrainte: "" };
+                    }
+                    await setDoc(doc(db, "membres", d.id), { edt: newEdt }, { merge: true });
+                }
+            }
+        }
+        migrerEdtSiNecessaire();
+        initNavigation();
+        updateWeekLabel();
+
+        function getWeekDates(offset = 0) {
+            const now = new Date();
+            const day = now.getDay();
+            const diff = day === 0 ? -6 : 1 - day;
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + diff + offset * 7);
+            const dates = [];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(monday);
+                d.setDate(monday.getDate() + i);
+                const dd = String(d.getDate()).padStart(2, "0");
+                const mm = String(d.getMonth() + 1).padStart(2, "0");
+                dates.push(dd + "/" + mm);
+            }
+            return dates;
+        }
+
+        function isPastDay(weekOffset, dayIndex) {
+            const now = new Date();
+            const currentDay = now.getDay();
+            const diff = currentDay === 0 ? -6 : 1 - currentDay;
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + diff + weekOffset * 7);
+            const target = new Date(monday);
+            target.setDate(monday.getDate() + dayIndex);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return target < today;
+        }
+
+        function getWeekKey(offset = 0) {
+            const now = new Date();
+            const day = now.getDay();
+            const diff = day === 0 ? -6 : 1 - day;
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + diff + offset * 7);
+            const y = monday.getFullYear();
+            const m = String(monday.getMonth() + 1).padStart(2, "0");
+            const d = String(monday.getDate()).padStart(2, "0");
+            return y + "-" + m + "-" + d; 
+        }
+
+        const pseudoOverrides = {};
+
+        async function chargerPseudoFirestore(id) {
+            try {
+                const snap = await getDoc(doc(db, "membres", id));
+                if (snap.exists() && snap.data().pseudo) {
+                    pseudoOverrides[id] = snap.data().pseudo;
+                }
+            } catch (e) {}
+        }
+
+        function getSurnom(id) {
+            if (pseudoOverrides[id]) return pseudoOverrides[id];
+            const m = MEMBRES_DATA.find(m => m.id === id);
+            return m ? m.surnom : id;
+        }
+
+        function validerContrainteHoraire(jour, contrainte) {
+            const cal = CALENDRIER[JOURS.indexOf(jour)];
+            const m = contrainte.match(/(\d{1,2})h(\d{2})?/);
+            if (!m) return true;
+            const hour = parseInt(m[1]);
+            const startHour = parseInt(cal.horaire.split("h")[0]);
+            const endHour = parseInt(cal.horaire.split("-")[1]);
+            return hour >= startHour && hour < endHour;
+        }
+
+        function sortByConstraintTime(players) {
+            return [...players].sort((a, b) => {
+                const timeA = a.contrainte.match(/(\d{1,2})h(\d{2})?/);
+                const timeB = b.contrainte.match(/(\d{1,2})h(\d{2})?/);
+                if (!timeA || !timeB) return 0;
+                const totalA = parseInt(timeA[1]) * 60 + (timeA[2] ? parseInt(timeA[2]) : 0);
+                const totalB = parseInt(timeB[1]) * 60 + (timeB[2] ? parseInt(timeB[2]) : 0);
+                return totalA - totalB;
+            });
+        }
+
+        function selectByPriority(mainGreens, subGreens, mainOranges, subOranges, mainViolets, subViolets, count) {
+            const tiers = [
+                mainGreens,
+                subGreens,
+                sortByConstraintTime(mainOranges),
+                sortByConstraintTime(subOranges),
+                mainViolets,
+                subViolets,
+            ];
+            const result = [];
+            let remaining = count;
+            let excessTier = -1;
+            for (let t = 0; t < tiers.length && remaining > 0; t++) {
+                if (tiers[t].length === 0) continue;
+                if (tiers[t].length <= remaining) {
+                    result.push(...tiers[t]);
+                    remaining -= tiers[t].length;
+                } else {
+                    excessTier = t;
+                    break;
+                }
+            }
+            return { selected: result, remaining, excessTier, tiers };
+        }
+
+        async function getGameInfo(weekKey, membres, jourIndex) {
+            const jour = JOURS[jourIndex];
+            const cal = CALENDRIER[jourIndex];
+            if (cal.type === "off") return { time: "Rien", players: "", count: 0, cancelled: false, selectedSurnoms: [], allGreens: [] };
+            const mainGreens = [], mainOranges = [], mainViolets = [];
+            const subGreens = [], subOranges = [], subViolets = [];
+            for (const membre of membres) {
+                const semaineEdt = membre.edt?.[weekKey] || {};
+                const statut = semaineEdt[jour]?.statut || "absent_reponse";
+                const contrainte = semaineEdt[jour]?.contrainte || "";
+                if (statut === "present" && contrainte && !validerContrainteHoraire(jour, contrainte)) {
+                    continue;
+                }
+                const entry = { surnom: membre.nom || getSurnom(membre.id), contrainte, id: membre.id };
+                if ((membre.role || "principal") === "remplacant") {
+                    if (statut === "present") subGreens.push(entry);
+                    else if (statut === "contrainte_horaire") subOranges.push(entry);
+                    else if (statut === "abstention") subViolets.push(entry);
+                } else {
+                    if (statut === "present") mainGreens.push(entry);
+                    else if (statut === "contrainte_horaire") mainOranges.push(entry);
+                    else if (statut === "abstention") mainViolets.push(entry);
+                }
+            }
+            const totalAvailable = mainGreens.length + mainOranges.length + mainViolets.length + subGreens.length + subOranges.length + subViolets.length;
+            const allGreens = [...mainGreens, ...subGreens];
+            const cancelled = totalAvailable < 5;
+            let selected;
+            if (cancelled) {
+                const p = selectByPriority(mainGreens, subGreens, mainOranges, subOranges, mainViolets, subViolets, totalAvailable);
+                selected = p.selected;
+            } else {
+                const p = selectByPriority(mainGreens, subGreens, mainOranges, subOranges, mainViolets, subViolets, 5);
+                if (p.excessTier >= 0 && (p.excessTier === 0 || p.excessTier === 1)) {
+                    // Besoin de roulette dans une tier verte (mainGreen ou subGreen)
+                    const rouletteRef = doc(db, "roulettes", weekKey);
+                    let rouletteData = {};
+                    try {
+                        const snap = await getDoc(rouletteRef);
+                        if (snap.exists()) rouletteData = snap.data();
+                    } catch (e) {}
+                    let stored = rouletteData[jour];
+                    let rebuild = false;
+                    if (stored && Array.isArray(stored) && stored.length === 5) {
+                        // Vérifier que les 5 stockés sont bien dans le pool vert éligible
+                        const eligible = new Set(allGreens.map(s => s.surnom));
+                        if (stored.every(name => eligible.has(name))) {
+                            selected = stored.map(name =>
+                                allGreens.find(x => x.surnom === name) || { surnom: name, contrainte: "" }
+                            );
+                        } else {
+                            rebuild = true;
+                        }
+                    } else {
+                        rebuild = true;
+                    }
+                    if (rebuild) {
+                        // Sélection : prendre ce qui a déjà été pris + un sous-ensemble aléatoire de la tier en excès
+                        const excessPlayers = p.tiers[p.excessTier];
+                        const shuffled = [...excessPlayers].sort(() => Math.random() - 0.5);
+                        const fromExcess = shuffled.slice(0, p.remaining);
+                        const after = [];
+                        let rem2 = 5 - (p.selected.length + fromExcess.length);
+                        for (let t = p.excessTier + 1; t < p.tiers.length && rem2 > 0; t++) {
+                            if (p.tiers[t].length <= rem2) {
+                                after.push(...p.tiers[t]);
+                                rem2 -= p.tiers[t].length;
+                            } else {
+                                after.push(...p.tiers[t].slice(0, rem2));
+                                rem2 = 0;
+                            }
+                        }
+                        selected = [...p.selected, ...fromExcess, ...after].slice(0, 5);
+                        rouletteData[jour] = selected.map(s => s.surnom);
+                        try {
+                            await setDoc(rouletteRef, rouletteData, { merge: true });
+                        } catch (e) {}
+                    }
+                } else {
+                    // Sélection déterministe : prendre les premiers par priorité
+                    selected = [...p.selected];
+                    if (p.excessTier >= 0) {
+                        selected.push(...p.tiers[p.excessTier].slice(0, p.remaining));
+                    }
+                    if (selected.length > 5) selected = selected.slice(0, 5);
+                }
+            }
+            const typeLabel = cal.type === "entrainement" ? "entrainement" : "match";
+            const scheduledStart = parseInt(cal.horaire.split("h")[0]);
+            const endHour = parseInt(cal.horaire.split("-")[1]);
+            let timeDisplay;
+            if (cancelled) {
+                timeDisplay = "<s>" + scheduledStart + "h-" + endHour + "h " + typeLabel + "</s> <b>ANNULE</b>";
+            } else {
+                let maxTime = -1;
+                for (const s of selected) {
+                    const o = [...mainOranges, ...subOranges].find(x => x.surnom === s.surnom);
+                    if (o && o.contrainte) {
+                        const m = o.contrainte.match(/(\d{1,2})h(\d{2})?/);
+                        if (m) {
+                            const total = parseInt(m[1]) * 60 + (m[2] ? parseInt(m[2]) : 0);
+                            if (total > maxTime) maxTime = total;
+                        }
+                    }
+                }
+                let startDisplay;
+                if (maxTime >= 0) {
+                    const h = Math.floor(maxTime / 60);
+                    const min = maxTime % 60;
+                    startDisplay = h + "h" + (min > 0 ? String(min).padStart(2, "0") : "");
+                } else {
+                    startDisplay = scheduledStart + "h";
+                }
+                timeDisplay = startDisplay + " " + typeLabel;
+            }
+            return {
+                time: timeDisplay,
+                players: selected.map(s => s.surnom).join(", "),
+                count: selected.length,
+                cancelled,
+                selectedSurnoms: selected.map(s => s.surnom),
+                allGreens: allGreens.map(s => s.surnom)
+            };
+        }
+
+        async function chargerTableauGeneral() {
+            const head = document.getElementById("generalTableHead");
+            const tbody = document.getElementById("generalTableBody");
+            if (!head || !tbody) return;
+
+            head.innerHTML = "";
+            const weekDates = getWeekDates(weekOffset);
+            const tr = document.createElement("tr");
+            const thLabel = document.createElement("th");
+            thLabel.textContent = "Membres";
+            tr.appendChild(thLabel);
+
+            for (let i = 0; i < 7; i++) {
+                const th = document.createElement("th");
+                const cal = CALENDRIER[i];
+                if (cal.type === "off" || isPastDay(weekOffset, i)) {
+                    th.style.background = "rgba(0,0,0,0.15)";
+                    th.style.color = "rgba(255,255,255,0.4)";
+                }
+                th.innerHTML = NOMS_JOURS[i] +
+                    "<br><span style='font-size:0.75rem;font-weight:normal;'>" + weekDates[i] +
+                    "</span><br><span style='font-size:0.75rem;font-weight:normal;'>" + cal.horaire +
+                    "</span><br><span style='font-size:0.7rem;font-weight:normal;opacity:0.8;'>" +
+                    (cal.type === "off" ? "" : (cal.type === "entrainement" ? "Entra\u00eenement" : "Match")) + "</span>";
+                tr.appendChild(th);
+            }
+            head.appendChild(tr);
+
+            // Corps
+            tbody.innerHTML = "";
+            const snapshot = await getDocs(collection(db, "membres"));
+            const membres = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            membres.sort((a, b) => MEMBRES_DATA.findIndex(m => m.id === a.id) - MEMBRES_DATA.findIndex(m => m.id === b.id));
+
+            for (const membre of membres) {
+                const tr = document.createElement("tr");
+                const tdNom = document.createElement("td");
+                tdNom.style.fontWeight = "bold";
+                const nameSpan = document.createElement("span");
+                nameSpan.textContent = membre.nom || membre.id;
+                tdNom.appendChild(nameSpan);
+                if ((membre.role || "principal") === "remplacant") {
+                    const badge = document.createElement("span");
+                    badge.textContent = " (R)";
+                    badge.style.fontSize = "0.8rem";
+                    badge.style.color = "#8A2BE2";
+                    badge.style.fontWeight = "bold";
+                    tdNom.appendChild(badge);
+                }
+                tr.appendChild(tdNom);
+
+                for (let i = 0; i < JOURS.length; i++) {
+                    const td = document.createElement("td");
+                    const jour = JOURS[i];
+                    const cal = CALENDRIER[i];
+
+                    if (cal.type === "off") {
+                        td.style.background = "rgba(0,0,0,0.12)";
+                        td.textContent = "\u2014";
+                        td.style.color = "rgba(255,255,255,0.3)";
+                    } else if (isPastDay(weekOffset, i)) {
+                        td.style.background = "rgba(0,0,0,0.12)";
+                        const weekKey = getWeekKey(weekOffset);
+                        const semaineEdt = membre.edt?.[weekKey] || {};
+                        const statut = semaineEdt[jour]?.statut || "absent_reponse";
+                        const contrainte = semaineEdt[jour]?.contrainte || "";
+                        const dot = document.createElement("div");
+                        dot.style.width = "20px";
+                        dot.style.height = "20px";
+                        dot.style.borderRadius = "50%";
+                        dot.style.margin = "0 auto";
+                        dot.style.background = getColorForStatut(statut);
+                        dot.style.border = "2px solid rgba(255,255,255,0.1)";
+                        dot.style.opacity = "0.35";
+                        td.appendChild(dot);
+                        if ((statut === "contrainte_horaire" || statut === "abstention") && contrainte) {
+                            const label = document.createElement("div");
+                            label.style.fontSize = "0.6rem";
+                            label.style.color = "rgba(255,255,255,0.5)";
+                            label.style.marginTop = "2px";
+                            label.textContent = contrainte;
+                            td.appendChild(label);
+                        }
+                    } else {
+                        const weekKey = getWeekKey(weekOffset);
+                        const semaineEdt = membre.edt?.[weekKey] || {};
+                        const statut = semaineEdt[jour]?.statut || "absent_reponse";
+                        const contrainte = semaineEdt[jour]?.contrainte || "";
+                        const dot = document.createElement("div");
+                        dot.style.width = "20px";
+                        dot.style.height = "20px";
+                        dot.style.borderRadius = "50%";
+                        dot.style.margin = "0 auto";
+                        dot.style.background = getColorForStatut(statut);
+                        dot.style.border = "2px solid rgba(255,255,255,0.3)";
+                        td.appendChild(dot);
+                        if ((statut === "contrainte_horaire" || statut === "abstention") && contrainte) {
+                            const label = document.createElement("div");
+                            label.style.fontSize = "0.6rem";
+                            label.style.color = "rgba(255,255,255,0.6)";
+                            label.style.marginTop = "2px";
+                            label.textContent = contrainte;
+                            td.appendChild(label);
+                        }
+                    }
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+
+            // Ligne Game
+            if (membres.length > 0) {
+                const weekKey = getWeekKey(weekOffset);
+                const trGame = document.createElement("tr");
+                const tdGameLabel = document.createElement("td");
+                tdGameLabel.textContent = "Game";
+                tdGameLabel.style.fontWeight = "bold";
+                tdGameLabel.style.background = "rgba(255,255,255,0.05)";
+                trGame.appendChild(tdGameLabel);
+                const allInfos = [];
+                for (let i = 0; i < 7; i++) {
+                    const td = document.createElement("td");
+                    const jour = JOURS[i];
+                    const cal = CALENDRIER[i];
+                    if (cal.type === "off") {
+                        td.style.background = "rgba(0,0,0,0.12)";
+                        td.textContent = "Rien";
+                        td.style.color = "rgba(255,255,255,0.3)";
+                        td.style.fontSize = "0.75rem";
+                        allInfos.push(null);
+                    } else {
+                        const info = await getGameInfo(weekKey, membres, i);
+                        allInfos.push(info);
+                        if (isPastDay(weekOffset, i)) {
+                            td.style.background = "rgba(0,0,0,0.08)";
+                        }
+                        td.style.fontSize = "0.7rem";
+                        td.style.lineHeight = "1.3";
+                        td.style.padding = "6px";
+                        let constraintInfo = "";
+                        if (info.allGreens && info.allGreens.length > 0 && info.selectedSurnoms && info.selectedSurnoms.length > 0) {
+                            const oranges = membres.filter(m => {
+                                const semaineEdt = m.edt?.[weekKey] || {};
+                                const jour = JOURS[i];
+                                const statut = semaineEdt[jour]?.statut;
+                                const contrainte = semaineEdt[jour]?.contrainte;
+                                return statut === "contrainte_horaire" && contrainte;
+                            });
+                            if (oranges.length > 0) {
+                                const maxTime = oranges.reduce((max, o) => {
+                                    const semaineEdt = o.edt?.[weekKey] || {};
+                                    const jour = JOURS[i];
+                                    const contrainte = semaineEdt[jour]?.contrainte;
+                                    const m = contrainte.match(/(\d{1,2})h(\d{2})?/);
+                                    if (!m) return max;
+                                    const total = parseInt(m[1]) * 60 + (m[2] ? parseInt(m[2]) : 0);
+                                    return Math.max(max, total);
+                                }, -1);
+                                if (maxTime >= 0) {
+                                    const h = Math.floor(maxTime / 60);
+                                    const min = maxTime % 60;
+                                    constraintInfo = " (contrainte: " + h + "h" + (min > 0 ? String(min).padStart(2, "0") : "") + ")";
+                                }
+                            }
+                        }
+                        td.innerHTML = "<div>" + info.time + "</div><div style='font-size:0.65rem;opacity:0.8;'>" + info.count + " joueur" + (info.count > 1 ? "s" : "") + " : " + info.players + constraintInfo + "</div>";
+                    }
+                    trGame.appendChild(td);
+                }
+                tbody.appendChild(trGame);
+                // Roulette display
+                let rouletteParts = [];
+                for (let i = 0; i < 7; i++) {
+                    const info = allInfos[i];
+                    if (!info || info.cancelled || info.allGreens.length <= 5) continue;
+                    if (isPastDay(weekOffset, i)) continue;
+                    const date = weekDates[i];
+                    const selected = info.selectedSurnoms;
+                    const notSelected = info.allGreens.filter(s => !selected.includes(s));
+                    const bold = selected.join(", ");
+                    const faded = notSelected.map(s => `<span style="text-decoration:line-through;opacity:0.5;">${s}</span>`).join(" ");
+                    rouletteParts.push(`<b>roulette du ${date}</b> : ${bold} ${faded}`);
+                }
+                const rd = document.querySelector("#navGeneral .roulette-display");
+                if (rd) rd.innerHTML = rouletteParts.join("<br>");
+            }
+        }
+
+        function initNavigation() {
+            const navBase = '<button class="btn btn-secondary nav-prev">&#9664;</button>' +
+                '<span class="week-label" style="font-size:1.1rem;font-weight:bold;min-width:220px;text-align:center;">Semaine du ...</span>' +
+                '<button class="btn btn-secondary nav-next">&#9654;</button>' +
+                '<button class="btn btn-secondary nav-today">Semaine actuelle</button>';
+            document.getElementById("navPerso").innerHTML = '<div style="display:flex;align-items:center;justify-content:center;gap:15px;margin:10px 0 20px 0;flex-wrap:wrap;">' + navBase + '</div>';
+            document.getElementById("navGeneral").innerHTML = '<div style="display:flex;align-items:center;justify-content:center;gap:15px;margin:10px 0 20px 0;flex-wrap:wrap;"><div class="roulette-display" style="font-size:0.8rem;color:#aaa;width:100%;text-align:center;line-height:1.6;"></div>' + navBase + '</div>';
+            document.querySelectorAll("#navPerso .nav-prev, #navGeneral .nav-prev")
+                .forEach(b => b.addEventListener("click", () => changeWeek(-1)));
+            document.querySelectorAll("#navPerso .nav-next, #navGeneral .nav-next")
+                .forEach(b => b.addEventListener("click", () => changeWeek(1)));
+            document.querySelectorAll("#navPerso .nav-today, #navGeneral .nav-today")
+                .forEach(b => b.addEventListener("click", goToToday));
+        }
+
+        function goToToday() {
+            weekOffset = 0;
+            updateWeekLabel();
+            chargerTableauGeneral();
+            if (currentMembreId) refreshEdtPerso();
+        }
+
+        let lastWeekChange = 0;
+        function changeWeek(delta) {
+            const now = Date.now();
+            if (now - lastWeekChange < 300) return;
+            lastWeekChange = now;
+            weekOffset = Math.max(-3, Math.min(7, weekOffset + delta));
+            updateWeekLabel();
+            chargerTableauGeneral();
+            if (currentMembreId) refreshEdtPerso();
+        }
+
+        function updateWeekLabel() {
+            const now = new Date();
+            const day = now.getDay();
+            const diff = day === 0 ? -6 : 1 - day;
+            const monday = new Date(now);
+            monday.setDate(now.getDate() + diff + weekOffset * 7);
+            const dd = String(monday.getDate()).padStart(2, "0");
+            const mm = String(monday.getMonth() + 1).padStart(2, "0");
+            const yyyy = monday.getFullYear();
+            const label = "Semaine du " + dd + "/" + mm + "/" + yyyy;
+            document.querySelectorAll(".week-label").forEach(el => el.textContent = label);
+        }
+
+        async function refreshEdtPerso() {
+            if (!currentMembreId) return;
+            const snap = await getDoc(doc(db, "membres", currentMembreId));
+            if (snap.exists()) afficherEdtPersonnel(snap.data());
+        }
+
+        chargerTableauGeneral();
+
+        const stateButton = document.getElementById("stateButton");
+        const stateLogin = document.getElementById("stateLogin");
+        const stateEdt = document.getElementById("stateEdt");
+        const btnModifier = document.getElementById("btnModifier");
+        const btnValider = document.getElementById("btnValider");
+        const btnFermerLogin = document.getElementById("btnFermerLogin");
+        const btnDeconnexion = document.getElementById("btnDeconnexion");
+        const mdpInput = document.getElementById("mdpInput");
+        const loginError = document.getElementById("loginError");
+        const edtPersonnelContainer = document.getElementById("edtPersonnelContainer");
+        const saveIndicator = document.getElementById("saveIndicator");
+
+        let currentMembreId = null;
+        let currentIsAdmin = false;
+
+        // Restaurer la session
+        const savedId = sessionStorage.getItem("membreId");
+        const savedAdmin = sessionStorage.getItem("isAdmin");
+        if (savedId && savedAdmin !== null) {
+            currentMembreId = savedId;
+            currentIsAdmin = savedAdmin === "true";
+            await chargerPseudoFirestore(savedId);
+            // Recharger l'EDT perso
+            const snap = await getDoc(doc(db, "membres", savedId));
+            if (snap.exists()) {
+                afficherEdtPersonnel(snap.data());
+                showState("edt");
+            }
+        }
+
+        function showState(state) {
+            stateButton.style.display = "none";
+            stateLogin.style.display = "none";
+            stateEdt.style.display = "none";
+            if (state === "button") stateButton.style.display = "block";
+            else if (state === "login") stateLogin.style.display = "block";
+            else if (state === "edt") stateEdt.style.display = "block";
+        }
+
+        btnModifier.addEventListener("click", () => {
+            mdpInput.value = "";
+            loginError.textContent = "";
+            showState("login");
+        });
+
+        btnFermerLogin.addEventListener("click", () => showState("button"));
+        mdpInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") btnValider.click();
+        });
+        btnDeconnexion.addEventListener("click", () => {
+            currentMembreId = null;
+            currentIsAdmin = false;
+            sessionStorage.removeItem("membreId");
+            sessionStorage.removeItem("isAdmin");
+            showState("button");
+        });
+
+        btnValider.addEventListener("click", async () => {
+            const mdp = mdpInput.value.trim();
+            if (!mdp) return;
+
+            // Vérifier d'abord les mots de passe admin
+            const qAdmin = query(collection(db, "membres"), where("mdp_admin", "==", mdp));
+            const adminSnapshot = await getDocs(qAdmin);
+
+            let membreId = null;
+            let membreData = null;
+            let isAdmin = false;
+
+            if (adminSnapshot.size > 0) {
+                membreId = adminSnapshot.docs[0].id;
+                membreData = adminSnapshot.docs[0].data();
+                isAdmin = true;
+            } else {
+                const q = query(collection(db, "membres"), where("mdp", "==", mdp));
+                const snapshot = await getDocs(q);
+                if (snapshot.size > 0) {
+                    membreId = snapshot.docs[0].id;
+                    membreData = snapshot.docs[0].data();
+                    isAdmin = false;
+                }
+            }
+
+            if (!membreId) {
+                loginError.textContent = "Mot de passe incorrect";
+                return;
+            }
+
+            currentMembreId = membreId;
+            currentIsAdmin = isAdmin;
+            sessionStorage.setItem("membreId", currentMembreId);
+            sessionStorage.setItem("isAdmin", currentIsAdmin);
+            await chargerPseudoFirestore(membreId);
+            loginError.textContent = "";
+            afficherEdtPersonnel(membreData);
+            showState("edt");
+        });
+
+        async function afficherEdtPersonnel(data) {
+            const surnom = MEMBRES_DATA.find(m => m.id === currentMembreId)?.surnom || data.nom;
+            edtPersonnelContainer.innerHTML = "";
+
+            const wrapper = document.createElement("div");
+            wrapper.style.display = "flex";
+            wrapper.style.alignItems = "flex-start";
+            wrapper.style.gap = "20px";
+            wrapper.style.justifyContent = "center";
+
+            const left = document.createElement("div");
+            left.style.minWidth = "120px";
+            left.style.textAlign = "left";
+            left.style.paddingTop = "30px";
+            const welcome = document.createElement("div");
+            welcome.style.fontSize = "1.2rem";
+            welcome.style.fontWeight = "bold";
+            const firestorePseudo = pseudoOverrides[currentMembreId];
+            const displaySurnom = firestorePseudo || surnom || data.nom;
+            welcome.innerHTML = currentIsAdmin ? "Bienvenue<br>Admin " + displaySurnom : "Bienvenue<br>" + displaySurnom;
+            left.appendChild(welcome);
+
+            const center = document.createElement("div");
+            const table = document.createElement("table");
+            table.className = "edt-perso-table";
+
+            const thead = document.createElement("thead");
+            const headerRow = document.createElement("tr");
+            headerRow.appendChild(createTh(""));
+            const weekDates = getWeekDates(weekOffset);
+            for (let i = 0; i < JOURS.length; i++) {
+                const th = document.createElement("th");
+                const cal = CALENDRIER[i];
+                if (cal.type === "off" || isPastDay(weekOffset, i)) {
+                    th.style.background = "rgba(0,0,0,0.15)";
+                    th.style.color = "rgba(255,255,255,0.4)";
+                }
+                th.innerHTML = (JOURS[i].charAt(0).toUpperCase() + JOURS[i].slice(1, 3)) +
+                    "<br><span style='font-size:0.75rem;font-weight:normal;'>" + weekDates[i] +
+                    "</span><br><span style='font-size:0.75rem;font-weight:normal;'>" + cal.horaire +
+                    "</span><br><span style='font-size:0.7rem;font-weight:normal;opacity:0.8;'>" +
+                    (cal.type === "off" ? "" : (cal.type === "entrainement" ? "Entra\u00eenement" : "Match")) + "</span>";
+                headerRow.appendChild(th);
+            }
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+            if (currentIsAdmin) {
+                for (const m of MEMBRES_DATA) {
+                    tbody.appendChild(await createMembreRow(m.id, m.surnom || m.nom));
+                }
+            } else {
+                tbody.appendChild(await createMembreRow(currentMembreId, surnom || data.nom));
+            }
+            table.appendChild(tbody);
+            const scrollDiv = document.createElement("div");
+            scrollDiv.className = "table-scroll";
+            scrollDiv.appendChild(table);
+            center.appendChild(scrollDiv);
+
+            const right = document.createElement("div");
+            right.style.minWidth = "140px";
+            right.style.textAlign = "left";
+            right.style.paddingTop = "30px";
+            const legendTitle = document.createElement("div");
+            legendTitle.style.fontWeight = "bold";
+            legendTitle.style.marginBottom = "10px";
+            legendTitle.textContent = "Légende";
+            right.appendChild(legendTitle);
+
+            const legendItems = [
+                { value: "absent_reponse", label: "Pas de réponse", color: "#666" },
+                { value: "present", label: "Présent", color: "#4CAF50" },
+                { value: "absent", label: "Absent", color: "#f44336" },
+                { value: "contrainte_horaire", label: "Présent avec contrainte horaires ", color: "#FF9800" },
+                { value: "abstention", label: "Je suis là mais je joue seulement si c'est vraiment nécessaire", color: "#6A1B9A" }
+            ];
+
+            for (const item of legendItems) {
+                const row = document.createElement("div");
+                row.style.display = "flex";
+                row.style.alignItems = "center";
+                row.style.marginBottom = "6px";
+                row.style.fontSize = "0.85rem";
+                const dot = document.createElement("span");
+                dot.style.width = "14px";
+                dot.style.height = "14px";
+                dot.style.borderRadius = "50%";
+                dot.style.display = "inline-block";
+                dot.style.marginRight = "8px";
+                dot.style.background = item.color;
+                dot.style.flexShrink = "0";
+                row.appendChild(dot);
+                row.appendChild(document.createTextNode(item.label));
+                right.appendChild(row);
+            }
+
+            wrapper.appendChild(left);
+            wrapper.appendChild(center);
+            wrapper.appendChild(right);
+            edtPersonnelContainer.appendChild(wrapper);
+        }
+
+        function createTh(text) {
+            const th = document.createElement("th");
+            th.textContent = text;
+            return th;
+        }
+
+        async function createMembreRow(membreId, surnom) {
+            const tr = document.createElement("tr");
+            const tdNom = document.createElement("td");
+            tdNom.textContent = surnom;
+            tdNom.style.fontWeight = "bold";
+            tdNom.style.fontSize = "0.9rem";
+            tr.appendChild(tdNom);
+
+            let edtData = {};
+            try {
+                const snap = await getDoc(doc(db, "membres", membreId));
+                if (snap.exists()) {
+                    const data = snap.data();
+                    const semaineKey = getWeekKey(weekOffset);
+                    edtData = data.edt?.[semaineKey] || {};
+                }
+            } catch (e) {
+                console.error("Erreur chargement", membreId, e);
+            }
+
+            for (let i = 0; i < JOURS.length; i++) {
+                const td = document.createElement("td");
+                const jour = JOURS[i];
+                if (CALENDRIER[i].type === "off") {
+                    td.style.background = "rgba(0,0,0,0.12)";
+                    td.textContent = "\u2014";
+                    td.style.color = "rgba(255,255,255,0.3)";
+                    tr.appendChild(td);
+                    continue;
+                }
+                if (isPastDay(weekOffset, i)) {
+                    td.style.background = "rgba(0,0,0,0.12)";
+                    const statutActuel = edtData?.[jour]?.statut || "absent_reponse";
+                    const dot = document.createElement("div");
+                    dot.style.width = "24px";
+                    dot.style.height = "24px";
+                    dot.style.borderRadius = "50%";
+                    dot.style.margin = "0 auto";
+                    dot.style.background = getColorForStatut(statutActuel);
+                    dot.style.border = "2px solid rgba(255,255,255,0.1)";
+                    dot.style.opacity = "0.35";
+                    td.appendChild(dot);
+                    tr.appendChild(td);
+                    continue;
+                }
+                td.style.padding = "6px";
+
+                const dotContainer = document.createElement("div");
+                dotContainer.style.position = "relative";
+                dotContainer.style.display = "inline-block";
+
+                const dot = document.createElement("div");
+                dot.style.width = "24px";
+                dot.style.height = "24px";
+                dot.style.borderRadius = "50%";
+                dot.style.cursor = "pointer";
+                dot.style.border = "2px solid rgba(255,255,255,0.3)";
+                dot.style.transition = "transform 0.2s";
+                dot.dataset.membreId = membreId;
+                dot.dataset.jour = jour;
+
+                const statutActuel = edtData?.[jour]?.statut || "absent_reponse";
+                const contrainteActuelle = edtData?.[jour]?.contrainte || "";
+                dot.dataset.value = statutActuel;
+                dot.dataset.contrainte = contrainteActuelle;
+                dot.style.background = getColorForStatut(statutActuel);
+
+                dot.addEventListener("mouseenter", () => { dot.style.transform = "scale(1.2)"; });
+                dot.addEventListener("mouseleave", () => { dot.style.transform = "scale(1)"; });
+
+                // Dropdown menu
+                const dropdown = document.createElement("div");
+                dropdown.className = "statut-dropdown";
+                dropdown.style.display = "none";
+                dropdown.style.position = "absolute";
+                dropdown.style.top = "30px";
+                dropdown.style.left = "50%";
+                dropdown.style.transform = "translateX(-50%)";
+                dropdown.style.background = "#333";
+                dropdown.style.borderRadius = "6px";
+                dropdown.style.padding = "4px 0";
+                dropdown.style.zIndex = "10";
+                dropdown.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
+                dropdown.style.minWidth = "40px";
+
+                const colors = [
+                    { value: "absent_reponse", color: "#666" },
+                    { value: "present", color: "#4CAF50" },
+                    { value: "absent", color: "#f44336" },
+                    { value: "contrainte_horaire", color: "#FF9800" },
+                    { value: "abstention", color: "#6A1B9A" }
+                ];
+
+                for (const c of colors) {
+                    const opt = document.createElement("div");
+                    opt.style.width = "28px";
+                    opt.style.height = "28px";
+                    opt.style.borderRadius = "50%";
+                    opt.style.background = c.color;
+                    opt.style.margin = "4px auto";
+                    opt.style.cursor = "pointer";
+                    opt.style.border = "2px solid transparent";
+                    opt.dataset.value = c.value;
+                    opt.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        selectStatut(membreId, jour, c.value, dot, dropdown);
+                    });
+                    opt.addEventListener("mouseenter", () => { opt.style.borderColor = "#fff"; });
+                    opt.addEventListener("mouseleave", () => { opt.style.borderColor = "transparent"; });
+                    dropdown.appendChild(opt);
+                }
+
+                dot.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const allDropdowns = document.querySelectorAll(".statut-dropdown");
+                    allDropdowns.forEach(d => d.style.display = "none");
+                    const rect = td.getBoundingClientRect();
+                    const spaceBelow = window.innerHeight - rect.bottom;
+                    if (spaceBelow < 200) {
+                        dropdown.style.top = "auto";
+                        dropdown.style.bottom = "30px";
+                    } else {
+                        dropdown.style.top = "30px";
+                        dropdown.style.bottom = "auto";
+                    }
+                    dropdown.style.display = "block";
+                });
+
+                dotContainer.appendChild(dot);
+                dotContainer.appendChild(dropdown);
+                td.appendChild(dotContainer);
+
+                // Contrainte : select pour orange (heure), input text pour violet (justification)
+                const contrainteSelect = document.createElement("select");
+                contrainteSelect.className = "contrainte-select";
+                contrainteSelect.dataset.membreId = membreId;
+                contrainteSelect.dataset.jour = jour;
+                contrainteSelect.style.display = statutActuel === "contrainte_horaire" ? "block" : "none";
+                contrainteSelect.style.marginTop = "4px";
+                contrainteSelect.style.width = "100%";
+                const optionVide = document.createElement("option");
+                optionVide.value = "";
+                optionVide.textContent = "...";
+                contrainteSelect.appendChild(optionVide);
+                const cal = CALENDRIER[i];
+                const startHour = parseInt(cal.horaire.split("h")[0]);
+                const endHour = parseInt(cal.horaire.split("-")[1]);
+                for (let h = startHour; h < endHour; h++) {
+                    for (let m = 0; m < 60; m += 5) {
+                        const timeStr = h + "h" + (m < 10 ? "0" + m : m);
+                        const option = document.createElement("option");
+                        option.value = timeStr;
+                        option.textContent = timeStr;
+                        contrainteSelect.appendChild(option);
+                    }
+                }
+                contrainteSelect.value = statutActuel === "contrainte_horaire" ? contrainteActuelle : "";
+                contrainteSelect.addEventListener("change", () => sauvegarderEdt(membreId));
+                td.appendChild(contrainteSelect);
+
+                const contrainteInput = document.createElement("input");
+                contrainteInput.type = "text";
+                contrainteInput.className = "contrainte-input-text";
+                contrainteInput.dataset.membreId = membreId;
+                contrainteInput.dataset.jour = jour;
+                contrainteInput.placeholder = "Raison...";
+                contrainteInput.style.display = statutActuel === "abstention" ? "block" : "none";
+                contrainteInput.style.marginTop = "4px";
+                contrainteInput.style.width = "100%";
+                contrainteInput.style.boxSizing = "border-box";
+                contrainteInput.value = statutActuel === "abstention" ? contrainteActuelle : "";
+                contrainteInput.addEventListener("input", () => sauvegarderEdt(membreId));
+                td.appendChild(contrainteInput);
+
+                tr.appendChild(td);
+            }
+            return tr;
+        }
+
+        function getColorForStatut(statut) {
+            const map = {
+                absent_reponse: "#666",
+                present: "#4CAF50",
+                absent: "#f44336",
+                contrainte_horaire: "#FF9800",
+                abstention: "#6A1B9A"
+            };
+            return map[statut] || "#666";
+        }
+
+        function selectStatut(membreId, jour, value, dot, dropdown) {
+            dot.dataset.value = value;
+            dot.style.background = getColorForStatut(value);
+            dropdown.style.display = "none";
+            const td = dot.closest("td");
+            const contrainteSelect = td.querySelector(".contrainte-select");
+            const contrainteInput = td.querySelector(".contrainte-input-text");
+            contrainteSelect.style.display = value === "contrainte_horaire" ? "block" : "none";
+            contrainteInput.style.display = value === "abstention" ? "block" : "none";
+            sauvegarderEdt(membreId);
+        }
+
+        async function sauvegarderEdt(membreId) {
+            const weekKey = getWeekKey(weekOffset);
+            const edtSemaine = {};
+            for (const jour of JOURS) {
+                const dot = document.querySelector(`div[data-membre-id="${membreId}"][data-jour="${jour}"]`);
+                if (!dot) continue;
+                const td = dot.closest("td");
+                const contrainteSelect = td.querySelector(".contrainte-select");
+                const contrainteInput = td.querySelector(".contrainte-input-text");
+                const statut = dot.dataset.value || "absent_reponse";
+                const contrainte = contrainteSelect.style.display !== "none" ? contrainteSelect.value :
+                                  contrainteInput.style.display !== "none" ? contrainteInput.value : "";
+                if (statut === "contrainte_horaire" && contrainte && !validerContrainteHoraire(jour, contrainte)) {
+                    saveIndicator.textContent = "\u274c Heure hors cr\u00e9neau pour " + jour + " !";
+                    setTimeout(() => { saveIndicator.textContent = ""; }, 3000);
+                    return;
+                }
+                // Si statut "present" mais contrainte invalide, changer en "contrainte_horaire"
+                if (statut === "present" && contrainte && !validerContrainteHoraire(jour, contrainte)) {
+                    edtSemaine[jour] = { statut: "contrainte_horaire", contrainte };
+                } else {
+                    edtSemaine[jour] = { statut, contrainte };
+                }
+            }
+            try {
+                const ref = doc(db, "membres", membreId);
+                const snap = await getDoc(ref);
+                let edt = snap.exists() ? (snap.data().edt || {}) : {};
+                edt[weekKey] = edtSemaine;
+                await setDoc(ref, { edt }, { merge: true });
+                // Vider la roulette stockée → recalcul au prochain chargement
+                try {
+                    await deleteDoc(doc(db, "roulettes", weekKey));
+                } catch (e) {}
+                saveIndicator.textContent = "Sauvegard\u00e9 \u2713";
+                setTimeout(() => { saveIndicator.textContent = ""; }, 2000);
+                chargerTableauGeneral();
+            } catch (e) {
+                saveIndicator.textContent = "Erreur de sauvegarde";
+                console.error("Erreur sauvegarde", e);
+            }
+        }
+        document.addEventListener("click", () => {
+            document.querySelectorAll(".statut-dropdown").forEach(d => d.style.display = "none");
+        });
+    </script>
+</body>
+</html>

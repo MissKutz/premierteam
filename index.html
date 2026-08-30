@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Premier</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Nickelodeon+NF&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif, 'Bitter', 'Georgia', 'Playfair Display', 'EB Garamond', 'Lora', 'Bebas Neue';
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        background: linear-gradient(100deg, #202020, #764ba2, #7c3b68);
+            color: #fff;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            background: transparent;
+            border-radius: 0;
+            border: none;
+        }
+
+        .header-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            border-radius: 0;
+            background: transparent;
+            padding: 0;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header-logo-left {
+            order: 1;
+        }
+
+        .header-logo-right {
+            order: 3;
+        }
+
+        .header-title-block {
+            order: 2;
+            text-align: center;
+            flex: 1;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff, #cccccc, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-text .back-btn,
+        .gradient-text input,
+        .gradient-text span {
+            -webkit-text-fill-color: white;
+            color: white;
+        }
+
+        .back-btn {
+        background:linear-gradient(100deg, #7c3b68, #313030, #764ba2);
+        color: white;
+        border: 2px solid #000000;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .back-btn:hover {
+        opacity: 0.7;
+    }
+
+    .pseudo-edit-btn {
+        margin-left: 4px;
+        text-decoration: none;
+        font-size: 0.8rem;
+        cursor: pointer;
+        opacity: 0.5;
+        vertical-align: middle;
+    }
+    .pseudo-edit-btn:hover { opacity: 1; }
+    .pseudo-edit-input {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 4px;
+        color: #fff;
+        padding: 2px 6px;
+        font-size: 0.8rem;
+        width: 100px;
+        vertical-align: middle;
+    }
+    .pseudo-edit-ok, .pseudo-edit-cancel {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 4px;
+        color: #fff;
+        padding: 2px 6px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        margin-left: 3px;
+        vertical-align: middle;
+    }
+    .pseudo-edit-ok:hover, .pseudo-edit-cancel:hover { background: rgba(255,255,255,0.3); }
+
+        .footer {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .footer > #authZone {
+        display: contents;
+    }
+    .footer > #authZone > div {
+        display: contents;
+    }
+    .footer > #authZone > #stateLogin {
+        display: none;
+    }
+    .footer .footer-left, .footer .footer-right {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    .footer .footer-right {
+        margin-left: auto;
+    }
+
+    #stateLogin {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    #mdpInput {
+        padding: 8px;
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        font-size: 1rem;
+        width: 200px;
+    }
+    #mdpInput::placeholder { color: rgba(255,255,255,0.5); }
+    #loginError { color: #ff6b6b; margin: 5px 0; font-size: 0.9rem; }
+
+    .squares {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem 0;
+        flex: 1;
+    }
+
+    .row-4, .row-3 {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+            .square {
+        width: 300px;
+        height: 300px;
+        border: 3px solid #000000;
+        border-radius: 10px;
+        color: #fff;
+        position: relative;
+        perspective: 1000px;
+        overflow: hidden;
+    }
+
+    .row-4 .square:nth-child(1) .square-front { background: linear-gradient(130deg, #e41717, #000000); }
+    .row-4 .square:nth-child(2) .square-front { background: linear-gradient(130deg, #1788df, #000000); }
+    .row-4 .square:nth-child(3) .square-front { background: linear-gradient(130deg, #ed5a16, #000000); }
+    .row-4 .square:nth-child(4) .square-front { background: linear-gradient(130deg, #1fb924, #000000); }
+    .row-3 .square:nth-child(1) .square-front { background: linear-gradient(130deg, #704d05, #000000); }
+    .row-3 .square:nth-child(2) .square-front { background: linear-gradient(130deg, #a016bf, #000000); }
+    .row-3 .square:nth-child(3) .square-front { background: linear-gradient(130deg, #9b0d52, #000000); }
+
+    .row-4 .square:nth-child(1) .square-back { background: linear-gradient(130deg, #000000, #e41717); }
+    .row-4 .square:nth-child(2) .square-back { background: linear-gradient(130deg, #000000, #1788df); }
+    .row-4 .square:nth-child(3) .square-back { background: linear-gradient(130deg, #000000, #ed5a16); }
+    .row-4 .square:nth-child(4) .square-back { background: linear-gradient(130deg, #000000, #1fb924); }
+    .row-3 .square:nth-child(1) .square-back { background: linear-gradient(130deg, #000000, #704d05); }
+    .row-3 .square:nth-child(2) .square-back { background: linear-gradient(130deg, #000000, #a016bf); }
+    .row-3 .square:nth-child(3) .square-back { background: linear-gradient(130deg, #000000, #9b0d52); }
+
+    .square-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.6s;
+        border-radius: 7px;
+    }
+
+    .square.flipped .square-inner {
+        transform: rotateY(180deg);
+    }
+
+    .square-front, .square-back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        border-radius: 7px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .square-back {
+        transform: rotateY(180deg);
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .square-back img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 7px;
+    }
+
+    .agent-toggle {
+        z-index: 15;
+        background: rgba(255,255,255,0.25);
+        border: none;
+        color: #fff;
+        font-size: 0.9rem;
+        cursor: pointer;
+        width: 24px;
+        height: 28px;
+        border-radius: 0 6px 6px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s;
+        padding: 0;
+        flex-shrink: 0;
+    }
+
+    .agent-toggle:hover {
+        background: rgba(255,255,255,0.45);
+    }
+
+    .agent-panel {
+        position: absolute;
+        top: 8px;
+        left: 0;
+        z-index: 12;
+        display: flex;
+        align-items: center;
+    }
+
+    .agent-choices {
+        display: none;
+        align-items: center;
+        gap: 4px;
+        background: rgba(0,0,0,0.7);
+        padding: 4px 8px;
+        border-radius: 0 6px 6px 0;
+        font-size: 0.8rem;
+        margin-left: 2px;
+        white-space: nowrap;
+    }
+
+    .agent-choices.open {
+        display: flex;
+    }
+
+    .agent-choices span {
+        margin-right: 4px;
+    }
+
+    .agent-opt {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: #fff;
+        cursor: pointer;
+        width: 26px;
+        height: 26px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+
+    .agent-opt:hover {
+        background: rgba(255,255,255,0.35);
+    }
+
+    .agent-opt.selected {
+        background: rgba(255,255,255,0.5);
+        border-color: #fff;
+        font-weight: bold;
+    }
+
+    .flip-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 10;
+        background: rgba(255,255,255,0.2);
+        border: none;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s;
+    }
+
+    .flip-btn:hover {
+        background: rgba(255,255,255,0.4);
+    }
+
+    .square-header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 3rem;
+        padding-left: 1rem;
+    }
+
+    .square-title {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .square-links {
+        list-style: none;
+        padding: 0;
+        margin-top: 2rem;
+        text-align: left;
+        font-size: 1.35rem;
+    }
+
+    .square-links li {
+        padding: 4px 0;
+    }
+
+    .social-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+    }
+
+    .square-links a {
+        color: #fff;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .square-links a:hover {
+        opacity: 0.6;
+    }
+
+    .role-select {
+        margin-top: 6px;
+        margin-left: 1rem;
+        padding: 3px 8px;
+        background: linear-gradient(100deg, rgba(32,32,32,0.55), rgba(118,75,162,0.55), rgba(124,59,104,0.55));
+        border: 1px solid rgba(255,255,255,0.3);
+        color: #fff;
+        font-weight: 700;
+        font-family: 'Nickelodeon NF', cursive;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        outline: none;
+        width: auto;
+        align-self: flex-start;
+    }
+
+    .role-select option {
+        background: #2a2a2a;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        letter-spacing: 0.3px;
+    }
+
+    .agent-default-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 7px;
+    }
+
+    .agent-split {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        flex-direction: column;
+        z-index: 1;
+        border-radius: 7px;
+        overflow: hidden;
+    }
+
+    .agent-split-part {
+        flex: 1;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .agent-inputs {
+        position: absolute;
+        top: 36px;
+        left: 6px;
+        right: 6px;
+        z-index: 15;
+        display: none;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .agent-inputs.visible {
+        display: flex;
+    }
+
+    .agent-input {
+        background: rgba(0,0,0,0.75);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: #fff;
+        padding: 3px 6px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .agent-input:focus {
+        border-color: #fff;
+    }
+
+    .agent-input.error {
+        border-color: #ff4444;
+    }
+
+    .agent-face-images {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        z-index: 2;
+        border-radius: 7px;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .agent-face-images.show {
+        display: flex;
+    }
+
+    .agent-face-image {
+        flex: 1;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: rgba(0,0,0,0.5);
+        border-right: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .agent-face-image:last-child {
+        border-right: none;
+    }
+
+    .agent-face-image.horizontal-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+        padding: 4px;
+        background: transparent;
+        border: none;
+        position: relative;
+        z-index: 10;
+    }
+
+    .agent-face-image.horizontal-list .agent-face-img {
+        flex: none;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,0.3);
+        background-color: rgba(0,0,0,0.7);
+        position: relative;
+        z-index: 11;
+    }
+
+    .agent-face-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .agent-background-split {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        z-index: 1;
+        border-radius: 7px;
+        overflow: hidden;
+    }
+
+    .agent-background-split.show {
+        display: flex;
+    }
+
+    .agent-background-part {
+        flex: 1;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .agent-foreground-square {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 3px solid rgba(255,255,255,0.5);
+        background-color: rgba(0,0,0,0.7);
+        z-index: 20;
+        display: none;
+        overflow: hidden;
+    }
+
+    .agent-foreground-square.show {
+        display: block;
+    }
+
+    .agent-foreground-square img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+        /* Responsive mobile */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                overflow-x: hidden;
+            }
+            .header-container {
+                flex-direction: column;
+                padding: 0.5rem;
+            }
+            .header-logo-left, .header-logo-right {
+                order: 2;
+            }
+            .header-title-block {
+                order: 1;
+            }
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+            h2 {
+                font-size: 1.2rem;
+                margin-top: -0.5rem;
+            }
+            .gradient-text {
+                font-size: 1rem;
+            }
+            #teamWinsInput, #teamLossesInput {
+                width: 45px !important;
+            }
+            .square {
+                width: 160px;
+                height: 160px;
+            }
+            .square-header {
+                padding-top: 1.5rem;
+                padding-left: 0.5rem;
+            }
+            .square-title {
+                font-size: 1rem;
+            }
+            .square-links {
+                font-size: 0.75rem;
+                margin-top: 0.5rem;
+            }
+            .social-icon {
+                width: 14px;
+                height: 14px;
+                margin-right: 4px;
+            }
+            .flip-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 1rem;
+                top: 4px;
+                right: 4px;
+            }
+            .agent-toggle {
+                width: 20px;
+                height: 22px;
+                font-size: 0.75rem;
+            }
+            .agent-choices {
+                font-size: 0.65rem;
+                padding: 2px 4px;
+            }
+            .agent-opt {
+                width: 22px;
+                height: 22px;
+                font-size: 0.75rem;
+            }
+            .pseudo-edit-btn {
+                font-size: 0.65rem;
+            }
+            .pseudo-edit-input {
+                width: 70px;
+                font-size: 0.7rem;
+            }
+            .pseudo-edit-ok, .pseudo-edit-cancel {
+                font-size: 0.65rem;
+                padding: 1px 4px;
+            }
+            .back-btn {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+            #mdpInput {
+                width: 100%;
+                max-width: 180px;
+                box-sizing: border-box;
+            }
+            .footer {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .footer .footer-left, .footer .footer-right {
+                width: 100%;
+                justify-content: center;
+            }
+            .footer .footer-right {
+                margin-left: 0;
+            }
+            .row-4, .row-3 {
+                gap: 0.8rem;
+            }
+            #welcomeZone {
+                padding: 0.3rem 0.5rem;
+            }
+            #teamPointsText {
+                font-size: 0.9rem;
+            }
+            .agent-foreground-square {
+                width: 60px;
+                height: 60px;
+            }
+            .agent-face-image.horizontal-list .agent-face-img {
+                width: 50px;
+                height: 50px;
+            }
+            .header-logo {
+                width: 100px;
+                height: 100px;
+            }
+        }
+ </style>
+</head>
+<body>
+    <div class="header-container">
+        <img src="img/image.teampremier.webp" alt="Logo" class="header-logo header-logo-left">
+        <div class="header-title-block">
+            <h1 class="gradient-text" style="font-family: 'EB Garamond'; font-size: 4.0rem;">Plastic4ever</h1>
+            <h2 class="gradient-text" style="font-family: 'EB Garamond', serif;margin-top: -1rem;">#plouf</h2>
+            <p class="gradient-text" style="font-family: 'Playfair Display', serif;">Points de la team : <span id="teamPointsText">??? / ???</span>
+                <span id="teamPointsInputs" style="display:none;">
+                    <input type="number" id="teamWinsInput" step="25" style="width:50px;padding:2px 4px;border:1px solid rgba(255,255,255,0.3);border-radius:5px;background:rgba(255,255,255,0.1);color:#fff;font-size:0.9rem;">
+                    <span style="margin:0 2px;">/</span>
+                    <input type="number" id="teamLossesInput" step="25" style="width:50px;padding:2px 4px;border:1px solid rgba(255,255,255,0.3);border-radius:5px;background:rgba(255,255,255,0.1);color:#fff;font-size:0.9rem;">
+                    <a href="#" class="back-btn" id="btnSaveTeamPoints" style="font-size:0.85rem;padding:2px 8px;">OK</a>
+                    <a href="#" class="back-btn" id="btnCancelTeamPoints" style="font-size:0.85rem;padding:2px 8px;">Annuler</a>
+                </span>
+                <a href="#" class="back-btn" id="btnEditTeamPoints" style="display:none;font-size:0.85rem;padding:2px 8px;">Modifier</a>
+            </p>
+        </div>
+        <img src="img/image.teampremier.webp" alt="Logo" class="header-logo header-logo-right">
+    </div>
+
+<div class="squares">
+    <div class="row-4">
+            <div class="square" data-member-id="morgane">
+    <div class="square-inner">
+        <div class="square-front">
+            <div class="square-header">
+                <span class="square-title" style="font-family: 'EB Garamond';">Morgane</span>
+            </div>
+            <ul class="square-links" style="font-family: 'EB Garamond';">
+                <li><img src="img/valorant.svg" class="social-icon"><span class="pseudo-text">MissKutz #519</span><a href="#" class="pseudo-edit-btn" style="display:none;">✎</a></li>
+                <li><a href=" https://discord.com/users/874025171713921105" target="_blank"><img src="img/discord.svg" class="social-icon">discord</a></li>
+                <li><a href="https://www.instagram.com/morgan_margaux5?igsh=MTcyaWtpMmw4cGhlag==" target="_blank"><img src="img/instagram.svg" class="social-icon">insta</a></li>
+            </ul>
+            <select class="role-select" data-role="principal">
+                <option value="principal">Joueur principal</option>
+                <option value="remplacant">Joueur remplaçant</option>
+            </select>
+        </div>
+        <div class="square-back">
+            <img src="img/agents/agent_8.png" class="agent-default-img">
+            <div class="agent-split"></div>
+            <div class="agent-face-images"></div>
+            <div class="agent-background-split"></div>
+            <div class="agent-foreground-square"></div>
+            <div class="agent-inputs">
+                <input type="text" class="agent-input" placeholder="Agent 1...">
+                <input type="text" class="agent-input" placeholder="Agent 2...">
+                <input type="text" class="agent-input" placeholder="Agent 3...">
+            </div>
+            <div class="agent-panel">
+                <button class="agent-toggle">▶</button>
+                <div class="agent-choices">
+                    <span>Agents :</span>
+                    <button class="agent-opt" data-value="0">0</button>
+                    <button class="agent-opt" data-value="1">1</button>
+                    <button class="agent-opt" data-value="2">2</button>
+                    <button class="agent-opt" data-value="3">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="flip-btn">↻</button>
+</div>
+
+    <div class="square" data-member-id="enzo">
+    <div class="square-inner">
+        <div class="square-front">
+            <div class="square-header">
+                <span class="square-title" style="font-family: 'EB Garamond';">Enzo</span>
+            </div>
+            <ul class="square-links" style="font-family: 'EB Garamond';">
+                <li><img src="img/valorant.svg" class="social-icon"><span class="pseudo-text">Misu #773</span><a href="#" class="pseudo-edit-btn" style="display:none;">✎</a></li>
+                <li><a href=" https://discord.com/users/1216782102515683381" target="_blank"><img src="img/discord.svg" class="social-icon">discord</a></li>
+                <li><a href="https://www.instagram.com/enzo0_fr?igsh=MWw4c2N4bmZsNzhpbw==" target="_blank"><img src="img/instagram.svg" class="social-icon">insta</a></li>
+            </ul>
+            <select class="role-select" data-role="principal">
+                <option value="principal">Joueur principal</option>
+                <option value="remplacant">Joueur remplaçant</option>
+            </select>
+        </div>
+        <div class="square-back">
+            <img src="img/agents/agent_8.png" class="agent-default-img">
+            <div class="agent-split"></div>
+            <div class="agent-face-images"></div>
+            <div class="agent-background-split"></div>
+            <div class="agent-foreground-square"></div>
+            <div class="agent-inputs">
+                <input type="text" class="agent-input" placeholder="Agent 1...">
+                <input type="text" class="agent-input" placeholder="Agent 2...">
+                <input type="text" class="agent-input" placeholder="Agent 3...">
+            </div>
+            <div class="agent-panel">
+                <button class="agent-toggle">▶</button>
+                <div class="agent-choices">
+                    <span>Agents :</span>
+                    <button class="agent-opt" data-value="0">0</button>
+                    <button class="agent-opt" data-value="1">1</button>
+                    <button class="agent-opt" data-value="2">2</button>
+                    <button class="agent-opt" data-value="3">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="flip-btn">↻</button>
+</div>
+
+    <div class="square" data-member-id="jules">
+    <div class="square-inner">
+        <div class="square-front">
+            <div class="square-header">
+                <span class="square-title" style="font-family: 'EB Garamond';">Jules</span>
+            </div>
+            <ul class="square-links" style="font-family: 'EB Garamond';">
+                <li><img src="img/valorant.svg" class="social-icon"><span class="pseudo-text">quoi #GOAT</span><a href="#" class="pseudo-edit-btn" style="display:none;">✎</a></li>
+                <li><a href=" https://discord.com/users/1225861361074966539" target="_blank"><img src="img/discord.svg" class="social-icon">discord</a></li>
+                <li><a href="https://www.instagram.com/fdm0128?igsh=MW04b3ZudWRqM3Z6dA==" target="_blank"><img src="img/instagram.svg" class="social-icon">insta</a></li>
+            </ul>
+            <select class="role-select" data-role="principal">
+                <option value="principal">Joueur principal</option>
+                <option value="remplacant">Joueur remplaçant</option>
+            </select>
+        </div>
+        <div class="square-back">
+            <img src="img/agents/agent_8.png" class="agent-default-img">
+            <div class="agent-split"></div>
+            <div class="agent-face-images"></div>
+            <div class="agent-background-split"></div>
+            <div class="agent-foreground-square"></div>
+            <div class="agent-inputs">
+                <input type="text" class="agent-input" placeholder="Agent 1...">
+                <input type="text" class="agent-input" placeholder="Agent 2...">
+                <input type="text" class="agent-input" placeholder="Agent 3...">
+            </div>
+            <div class="agent-panel">
+                <button class="agent-toggle">▶</button>
+                <div class="agent-choices">
+                    <span>Agents :</span>
+                    <button class="agent-opt" data-value="0">0</button>
+                    <button class="agent-opt" data-value="1">1</button>
+                    <button class="agent-opt" data-value="2">2</button>
+                    <button class="agent-opt" data-value="3">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="flip-btn">↻</button>
+</div>
+
+    <div class="square" data-member-id="sebastien">
+    <div class="square-inner">
+        <div class="square-front">
+            <div class="square-header">
+                <span class="square-title" style="font-family: 'EB Garamond';">Sébastien</span>
+            </div>
+            <ul class="square-links" style="font-family: 'EB Garamond';">
+                <li><img src="img/valorant.svg" class="social-icon"><span class="pseudo-text">Pollux #PoPo</span><a href="#" class="pseudo-edit-btn" style="display:none;">✎</a></li>
+                <li><a href=" https://discord.com/users/1173028543370903614" target="_blank"><img src="img/discord.svg" class="social-icon">discord</a></li>
+                <li><a href="https://www.instagram.com/sebpollux06?igsh=MXhodGtmYjU4YmJodQ==" target="_blank"><img src="img/instagram.svg" class="social-icon">insta</a></li>
+            </ul>
+            <select class="role-select" data-role="principal">
+                <option value="principal">Joueur principal</option>
+                <option value="remplacant">Joueur remplaçant</option>
+            </select>
+        </div>
+        <div class="square-back">
+            <img src="img/agents/agent_8.png" class="agent-default-img">
+            <div class="agent-split"></div>
+            <div class="agent-face-images"></div>
+            <div class="agent-background-split"></div>
+            <div class="agent-foreground-square"></div>
+            <div class="agent-inputs">
+                <input type="text" class="agent-input" placeholder="Agent 1...">
+                <input type="text" class="agent-input" placeholder="Agent 2...">
+                <input type="text" class="agent-input" placeholder="Agent 3...">
+            </div>
+            <div class="agent-panel">
+                <button class="agent-toggle">▶</button>
+                <div class="agent-choices">
+                    <span>Agents :</span>
+                    <button class="agent-opt" data-value="0">0</button>
+                    <button class="agent-opt" data-value="1">1</button>
+                    <button class="agent-opt" data-value="2">2</button>
+                    <button class="agent-opt" data-value="3">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="flip-btn">↻</button>
+</div>
+</div>
+
+<div class="row-3">
+        <div class="square" data-member-id="orphee">
+    <div class="square-inner">
+        <div class="square-front">
+            <div class="square-header">
+                <span class="square-title" style="font-family: 'EB Garamond';">Orphée</span>
+            </div>
+            <ul class="square-links" style="font-family: 'EB Garamond';">
+                <li><img src="img/valorant.svg" class="social-icon"><span class="pseudo-text">pawsocks lover #huh</span><a href="#" class="pseudo-edit-btn" style="display:none;">✎</a></li>
+                <li><a href=" https://discord.com/users/1189140602554695760" target="_blank"><img src="img/discord.svg" class="social-icon">discord</a></li>
+                <li><a href="https://www.instagram.com/howrphee?igsh=MTRyOHR0djNxZDB3Zw==" target="_blank"><img src="img/instagram.svg" class="social-icon">insta</a></li>
+            </ul>
+            <select class="role-select" data-role="principal">
+                <option value="principal">Joueur principal</option>
+                <option value="remplacant">Joueur remplaçant</option>
+            </select>
+        </div>
+        <div class="square-back">
+            <img src="img/agents/agent_8.png" class="agent-default-img">
+            <div class="agent-split"></div>
+            <div class="agent-face-images"></div>
+            <div class="agent-background-split"></div>
+            <div class="agent-foreground-square"></div>
+            <div class="agent-inputs">
+                <input type="text" class="agent-input" placeholder="Agent 1...">
+                <input type="text" class="agent-input" placeholder="Agent 2...">
+                <input type="text" class="agent-input" placeholder="Agent 3...">
+            </div>
+            <div class="agent-panel">
+                <button class="agent-toggle">▶</button>
+                <div class="agent-choices">
+                    <span>Agents :</span>
+                    <button class="agent-opt" data-value="0">0</button>
+                    <button class="agent-opt" data-value="1">1</button>
+                    <button class="agent-opt" data-value="2">2</button>
+                    <button class="agent-opt" data-value="3">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="flip-btn">↻</button>
+</div>
+
+    <div class="square" data-member-id="octave">
+    <div class="square-inner">
+        <div class="square-front">
+            <div class="square-header">
+                <span class="square-title" style="font-family: 'EB Garamond';">Octave</span>
+            </div>
+            <ul class="square-links" style="font-family: 'EB Garamond';">
+                <li><img src="img/valorant.svg" class="social-icon"><span class="pseudo-text">Sacaduwu #Ytem</span><a href="#" class="pseudo-edit-btn" style="display:none;">✎</a></li>
+                <li><a href=" https://discord.com/users/1247622815851483137" target="_blank"><img src="img/discord.svg" class="social-icon">discord</a></li>
+                <li><a href="https://www.instagram.com/octave.dprz?igsh=MW5kb3c4Y3o4dWtmMQ==" target="_blank"><img src="img/instagram.svg" class="social-icon">insta</a></li>
+            </ul>
+            <select class="role-select" data-role="principal">
+                <option value="principal">Joueur principal</option>
+                <option value="remplacant">Joueur remplaçant</option>
+            </select>
+        </div>
+        <div class="square-back">
+            <img src="img/agents/agent_8.png" class="agent-default-img">
+            <div class="agent-split"></div>
+            <div class="agent-face-images"></div>
+            <div class="agent-background-split"></div>
+            <div class="agent-foreground-square"></div>
+            <div class="agent-inputs">
+                <input type="text" class="agent-input" placeholder="Agent 1...">
+                <input type="text" class="agent-input" placeholder="Agent 2...">
+                <input type="text" class="agent-input" placeholder="Agent 3...">
+            </div>
+            <div class="agent-panel">
+                <button class="agent-toggle">▶</button>
+                <div class="agent-choices">
+                    <span>Agents :</span>
+                    <button class="agent-opt" data-value="0">0</button>
+                    <button class="agent-opt" data-value="1">1</button>
+                    <button class="agent-opt" data-value="2">2</button>
+                    <button class="agent-opt" data-value="3">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="flip-btn">↻</button>
+</div>  
+
+    <div class="square" data-member-id="clement">
+    <div class="square-inner">
+        <div class="square-front">
+            <div class="square-header">
+                <span class="square-title" style="font-family: 'EB Garamond';">Clément</span>
+            </div>
+            <ul class="square-links" style="font-family: 'EB Garamond';">
+               <li><img src="img/valorant.svg" class="social-icon"><span class="pseudo-text">Clemrsse #2609</span><a href="#" class="pseudo-edit-btn" style="display:none;">✎</a></li>
+                <li><a href=" https://discord.com/users/1294434297159094273" target="_blank"><img src="img/discord.svg" class="social-icon">discord</a></li>
+                <li><a href="https://www.instagram.com/clem.rsse?igsh=cDloaWtpcG4zd2Y0" target="_blank"><img src="img/instagram.svg" class="social-icon">insta</a></li>
+            </ul>
+            <select class="role-select" data-role="principal">
+                <option value="principal">Joueur principal</option>
+                <option value="remplacant">Joueur remplaçant</option>
+            </select>
+        </div>
+        <div class="square-back">
+            <img src="img/agents/agent_8.png" class="agent-default-img">
+            <div class="agent-split"></div>
+            <div class="agent-face-images"></div>
+            <div class="agent-background-split"></div>
+            <div class="agent-foreground-square"></div>
+            <div class="agent-inputs">
+                <input type="text" class="agent-input" placeholder="Agent 1...">
+                <input type="text" class="agent-input" placeholder="Agent 2...">
+                <input type="text" class="agent-input" placeholder="Agent 3...">
+            </div>
+            <div class="agent-panel">
+                <button class="agent-toggle">▶</button>
+                <div class="agent-choices">
+                    <span>Agents :</span>
+                    <button class="agent-opt" data-value="0">0</button>
+                    <button class="agent-opt" data-value="1">1</button>
+                    <button class="agent-opt" data-value="2">2</button>
+                    <button class="agent-opt" data-value="3">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="flip-btn">↻</button>
+</div>
+</div>
+</div>
+
+    <!-- Bienvenue + pseudo zone (au-dessus du footer) -->
+    <div id="welcomeZone" style="display:none;text-align:center;padding:0.5rem 2rem;width:100%;box-sizing:border-box;">
+        <p id="welcomeMessage" style="font-size:1.2rem;font-weight:bold;margin:0;"></p>
+        <!-- l'édition du pseudo se fait directement sur les cartes -->
+    </div>
+
+    <div class="footer">
+        <div id="authZone">
+            <!-- Non connecté -->
+            <div class="footer-left" id="stateButton">
+                <a href="#" class="back-btn" id="btnModifier">Se connecter</a>
+            </div>
+            <div class="footer-right" id="stateButtonRight">
+                <a href="schedule.html" class="back-btn">Voir/modifier le calendrier</a>
+            </div>
+            <!-- Mode login -->
+            <div id="stateLogin">
+                <input type="password" id="mdpInput" placeholder="Mot de passe">
+                <a href="#" class="back-btn" id="btnValider">Valider</a>
+                <a href="#" class="back-btn" id="btnFermerLogin">Fermer</a>
+                <p id="loginError"></p>
+            </div>
+            <!-- Connecté -->
+            <div class="footer-left" id="stateEdt" style="display:none;">
+                <a href="#" class="back-btn" id="btnDeconnexion">Se déconnecter</a>
+            </div>
+            <div class="footer-right" id="stateEdtRight" style="display:none;">
+                <a href="schedule.html" class="back-btn">Voir/modifier le calendrier</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+  const agentImages = {
+    'astra': 'img/agents/astra.jpg',
+    'breach': 'img/agents/breach.jpg',
+    'brimstone': 'img/agents/brimstone.jpg',
+    'chamber': 'img/agents/chamber.jpg',
+    'clove': 'img/agents/clove.jpg',
+    'cypher': 'img/agents/cypher.jpg',
+    'deadlock': 'img/agents/deadlock.jpg',
+    'fade': 'img/agents/fade.jpg',
+    'gekko': 'img/agents/gekko.jpg',
+    'harbor': 'img/agents/harbor.jpg',
+    'iso': 'img/agents/iso.jpg',
+    'jett': 'img/agents/jett.jpg',
+    'kayo': 'img/agents/kayo.jpg',
+    'killjoy': 'img/agents/killjoy.jpg',
+    'miks': 'img/agents/miks.jpg',
+    'neon': 'img/agents/néon.jpg',
+    'néon': 'img/agents/néon.jpg',
+    'omen': 'img/agents/omen.jpg',
+    'phoenix': 'img/agents/phoenix.jpg',
+    'raze': 'img/agents/raze.jpg',
+    'reyna': 'img/agents/reyna.jpg',
+    'sage': 'img/agents/sage.jpg',
+    'skye': 'img/agents/skye.jpg',
+    'sova': 'img/agents/sova.jpg',
+    'tejo': 'img/agents/tejo.jpg',
+    'veto': 'img/agents/veto.jpg',
+    'viper': 'img/agents/viper.jpg',
+    'vyse': 'img/agents/vyse.jpg',
+    'waylay': 'img/agents/waylay.jpg',
+    'yoru': 'img/agents/yoru.jpg'
+  };
+
+  const NAME_TO_ID = {
+    "Morgane": "morgane",
+    "Enzo": "enzo",
+    "Jules": "jules",
+    "Sébastien": "sebastien",
+    "Orphée": "orphee",
+    "Octave": "octave",
+    "Clément": "clement"
+  };
+
+  function canEditSquare(name) {
+    const membreId = sessionStorage.getItem("membreId");
+    const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+    if (!membreId) return false;
+    const targetId = NAME_TO_ID[name];
+    return membreId === targetId || isAdmin;
+  }
+
+  function getMemberName(square) {
+    return square.querySelector('.square-title').textContent.trim();
+  }
+
+  function getConfig(square) {
+    const opt = square.querySelector('.agent-opt.selected');
+    const count = opt ? parseInt(opt.dataset.value) : 0;
+    const inputs = square.querySelectorAll('.agent-input');
+    const agents = [];
+    inputs.forEach((input, i) => {
+      if (i < count) {
+        agents.push(input.value.trim().toLowerCase());
+      } else {
+        agents.push('');
+      }
+    });
+    return { count, agents };
+  }
+
+  function saveConfig(square) {
+    const name = getMemberName(square);
+    const config = getConfig(square);
+    if (window.__saveAgentConfig) {
+      window.__saveAgentConfig(name, config);
+    } else {
+      localStorage.setItem('agentConfig-' + name, JSON.stringify(config));
+    }
+  }
+
+   function renderAgentDisplay(square, config) {
+     const { count, agents } = config;
+     const img = square.querySelector('.agent-default-img');
+     const split = square.querySelector('.agent-split');
+     const inputs = square.querySelector('.agent-inputs');
+     const inputFields = inputs.querySelectorAll('.agent-input');
+     const faceImages = square.querySelector('.agent-face-images');
+     const backgroundSplit = square.querySelector('.agent-background-split');
+     const foregroundSquare = square.querySelector('.agent-foreground-square');
+
+     if (count === 0) {
+       inputs.classList.remove('visible');
+       img.src = 'img/agents/agent_8.png';
+       img.style.display = 'block';
+       split.innerHTML = '';
+       split.style.display = 'none';
+       faceImages.classList.remove('show');
+       faceImages.innerHTML = '';
+       backgroundSplit.classList.remove('show');
+       backgroundSplit.innerHTML = '';
+       foregroundSquare.classList.remove('show');
+       foregroundSquare.innerHTML = '';
+       return;
+     }
+
+      inputFields.forEach((input, i) => {
+       input.style.display = i < count ? 'block' : 'none';
+       if (i < count && agents[i]) input.value = agents[i];
+       else if (i >= count) input.value = '';
+     });
+
+     const validAgents = agents.slice(0, count).map(a => a && agentImages[a] ? a : null);
+     const hasAll = validAgents.every(a => a !== null);
+
+     if (!hasAll || validAgents.length === 0) {
+       img.style.display = 'block';
+       img.src = 'img/agents/agent_8.png';
+       split.innerHTML = '';
+       split.style.display = 'none';
+       faceImages.classList.remove('show');
+       faceImages.innerHTML = '';
+       backgroundSplit.classList.remove('show');
+       backgroundSplit.innerHTML = '';
+       foregroundSquare.classList.remove('show');
+       foregroundSquare.innerHTML = '';
+       return;
+     }
+
+     img.style.display = 'none';
+     split.innerHTML = '';
+     split.style.display = 'none';
+     faceImages.classList.remove('show');
+     faceImages.innerHTML = '';
+     backgroundSplit.classList.remove('show');
+     backgroundSplit.innerHTML = '';
+     foregroundSquare.classList.remove('show');
+     foregroundSquare.innerHTML = '';
+
+     if (count === 1) {
+       img.style.display = 'block';
+       img.src = agentImages[validAgents[0]];
+     } else if (count === 2) {
+       backgroundSplit.className = 'agent-background-split show';
+       backgroundSplit.innerHTML = validAgents.map(a =>
+         `<div class="agent-background-part" style="background-image:url('${agentImages[a]}')"></div>`
+       ).join('');
+     } else if (count === 3) {
+       backgroundSplit.className = 'agent-background-split show';
+       backgroundSplit.innerHTML = validAgents.slice(0, 2).map(a =>
+         `<div class="agent-background-part" style="background-image:url('${agentImages[a]}')"></div>`
+       ).join('');
+       foregroundSquare.className = 'agent-foreground-square show';
+       foregroundSquare.innerHTML = `<img src="${agentImages[validAgents[2]]}" alt="Agent 3">`;
+     }
+  }
+
+  function updateFromInput(input) {
+    const square = input.closest('.square');
+    const name = getMemberName(square);
+    if (!canEditSquare(name)) {
+      alert("Vous ne pouvez modifier que votre propre carte.");
+      return;
+    }
+    const val = input.value.trim().toLowerCase();
+    if (!val) return;
+    if (agentImages[val]) {
+      input.classList.remove('error');
+    } else {
+      input.classList.add('error');
+      return;
+    }
+    const config = getConfig(square);
+    const index = Array.from(input.parentElement.querySelectorAll('.agent-input')).indexOf(input);
+    config.agents[index] = val;
+    renderAgentDisplay(square, config);
+    saveConfig(square);
+  }
+
+  function handleToggleClick(toggle) {
+    const square = toggle.closest('.square');
+    const name = getMemberName(square);
+    if (!canEditSquare(name)) {
+      alert("Vous ne pouvez modifier que votre propre carte.");
+      return;
+    }
+    const choices = toggle.parentElement.querySelector('.agent-choices');
+    const inputs = square.querySelector('.agent-inputs');
+
+    choices.classList.toggle('open');
+
+    if (choices.classList.contains('open')) {
+      const selectedOpt = square.querySelector('.agent-opt.selected');
+      const count = selectedOpt ? parseInt(selectedOpt.dataset.value) : 0;
+      inputs.classList.add('visible');
+      Array.from(inputs.querySelectorAll('.agent-input')).forEach((input, i) => {
+        input.style.display = i < count ? 'block' : 'none';
+      });
+    } else {
+      inputs.classList.remove('visible');
+    }
+  }
+
+  function handleOptClick(opt) {
+    const square = opt.closest('.square');
+    const name = getMemberName(square);
+    if (!canEditSquare(name)) {
+      alert("Vous ne pouvez modifier que votre propre carte.");
+      return;
+    }
+    const val = parseInt(opt.dataset.value);
+
+    opt.parentElement.querySelectorAll('.agent-opt').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    setTimeout(() => opt.closest('.agent-choices').classList.remove('open'), 600);
+
+    const config = { count: val, agents: ['', '', ''] };
+    renderAgentDisplay(square, config);
+    saveConfig(square);
+  }
+
+  function restoreSaved() {
+    document.querySelectorAll('.square').forEach(square => {
+      const name = getMemberName(square);
+      let config = null;
+      // Essayer Firestore d'abord
+      if (window.__agentConfigs && window.__agentConfigs[name]) {
+        config = window.__agentConfigs[name];
+      } else {
+        // Fallback localStorage
+        const saved = localStorage.getItem('agentConfig-' + name);
+        if (saved) {
+          try { config = JSON.parse(saved); } catch (e) {}
+        }
+      }
+      if (config) {
+        const opt = square.querySelector(`.agent-opt[data-value="${config.count}"]`);
+        if (opt) {
+          square.querySelectorAll('.agent-opt').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+        }
+        renderAgentDisplay(square, config);
+      }
+      updatePseudoEditButtons();
+    });
+  }
+
+  function updatePseudoEditButtons() {
+    const membreId = sessionStorage.getItem("membreId");
+    const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+    document.querySelectorAll('.square').forEach(square => {
+        const name = getMemberName(square);
+        const targetId = NAME_TO_ID[name];
+        const canEdit = membreId && (membreId === targetId || isAdmin);
+        const btn = square.querySelector('.pseudo-edit-btn');
+        if (btn) btn.style.display = canEdit ? 'inline' : 'none';
+    });
+  }
+
+  window.__updatePseudoEditButtons = updatePseudoEditButtons;
+  
+  function startPseudoEdit(btn) {
+    const li = btn.closest('li');
+    const pseudoText = li.querySelector('.pseudo-text');
+    const currentText = pseudoText.textContent.trim();
+
+    pseudoText.style.display = 'none';
+    btn.style.display = 'none';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'pseudo-edit-input';
+    input.value = currentText;
+
+    const okBtn = document.createElement('button');
+    okBtn.textContent = 'OK';
+    okBtn.className = 'pseudo-edit-ok';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.textContent = '✕';
+    cancelBtn.className = 'pseudo-edit-cancel';
+
+    li.appendChild(input);
+    li.appendChild(okBtn);
+    li.appendChild(cancelBtn);
+    input.focus();
+    input.select();
+
+    function endEdit(save) {
+        if (save) {
+        const newVal = input.value.trim();
+        if (newVal && newVal !== currentText) {
+            const square = li.closest('.square');
+            const memberId = square.dataset.memberId;
+            if (window.__saveMemberPseudo) {
+            window.__saveMemberPseudo(memberId, newVal);
+            }
+            pseudoText.textContent = newVal;
+            }
+        }
+        pseudoText.style.display = 'inline';
+        const membreId = sessionStorage.getItem("membreId");
+        const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+        const name = getMemberName(li.closest('.square'));
+        const targetId = NAME_TO_ID[name];
+        if (membreId && (membreId === targetId || isAdmin)) {
+        btn.style.display = 'inline';
+        }
+        input.remove();
+        okBtn.remove();
+        cancelBtn.remove();
+    }
+
+    okBtn.addEventListener('click', () => endEdit(true));
+    cancelBtn.addEventListener('click', () => endEdit(false));
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') endEdit(true);
+        else if (e.key === 'Escape') endEdit(false);
+    });
+  }
+
+  document.querySelector('.squares').addEventListener('click', function(e) {
+    const btn = e.target.closest('.flip-btn');
+    if (btn) {
+      btn.parentElement.classList.toggle('flipped');
+    }
+    const toggle = e.target.closest('.agent-toggle');
+    if (toggle) {
+      handleToggleClick(toggle);
+    }
+    const opt = e.target.closest('.agent-opt');
+    if (opt) {
+      handleOptClick(opt);
+    }
+    const pseudoBtn = e.target.closest('.pseudo-edit-btn');
+    if (pseudoBtn) {
+        e.preventDefault();
+        startPseudoEdit(pseudoBtn);
+        return;
+    }
+  });
+
+  document.querySelector('.squares').addEventListener('keydown', function(e) {
+    const input = e.target.closest('.agent-input');
+    if (input && e.key === 'Enter') {
+      updateFromInput(input);
+      setTimeout(() => {
+        const square = input.closest('.square');
+        const inputs = square.querySelector('.agent-inputs');
+        inputs.classList.remove('visible');
+      }, 100);
+    }
+  });
+
+  document.querySelector('.squares').addEventListener('focusout', function(e) {
+    const input = e.target.closest('.agent-input');
+    if (input && input.value.trim()) {
+      updateFromInput(input);
+      setTimeout(() => {
+        const square = input.closest('.square');
+        const inputs = square.querySelector('.agent-inputs');
+        inputs.classList.remove('visible');
+      }, 100);
+    }
+  });
+
+  document.querySelector('.squares').addEventListener('focusin', function(e) {
+    const input = e.target.closest('.agent-input');
+    if (input) {
+      const square = input.closest('.square');
+      const inputs = square.querySelector('.agent-inputs');
+      inputs.classList.add('visible');
+    }
+  });
+
+  window.__restoreSaved = restoreSaved;
+  restoreSaved();
+
+  document.querySelectorAll('.role-select').forEach(select => {
+    const member = select.closest('.square').querySelector('.square-title').textContent.trim();
+
+    select.addEventListener('change', function() {
+      const member = this.closest('.square').querySelector('.square-title').textContent.trim();
+      if (window.__saveRole) window.__saveRole(member, this.value);
+    });
+
+    const memberColors = {
+      'Morgane': '#ff0000',
+      'Enzo': '#66b3ff',
+      'Jules': '#ff8c00',
+      'Sébastien': '#66cc66',
+      'Orphée': '#cd853f',
+      'Octave': '#d870d8',
+      'Clément': '#ff69b4'
+    };
+
+    if (memberColors[member]) {
+      select.style.color = memberColors[member];
+    }
+  });
+</script>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getFirestore, collection, doc, getDocs, setDoc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBTkuOD4jnR3tvmkAxKR5UM0nB6RNqWC1M",
+    authDomain: "premierteam-plouf.firebaseapp.com",
+    projectId: "premierteam-plouf",
+    storageBucket: "premierteam-plouf.firebasestorage.app",
+    messagingSenderId: "511246296521",
+    appId: "1:511246296521:web:2f4b07c682ee25dd6d3418"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const MEMBRES_DATA = [
+    { id: "morgane", nom: "Morgane", surnom: "MK", mdp: "14022019", mdp_admin: "Admin_mk_11" },
+    { id: "enzo", nom: "Enzo", surnom: "Misu", mdp: "2323", mdp_admin: "Admin_misu_12" },
+    { id: "jules", nom: "Jules", surnom: "FDM", mdp: "julesf0128" },
+    { id: "sebastien", nom: "Sébastien", surnom: "Pollux", mdp: "Honda06+" },
+    { id: "orphee", nom: "Orphée", surnom: "Orphée", mdp: "jemeraivoiralexiaenrobedechambre69" },
+    { id: "octave", nom: "Octave", surnom: "SacadUwU", mdp: "motdepasse.1" },
+    { id: "clement", nom: "Clément", surnom: "Clemrsse", mdp: "clemrsse123" }
+  ];
+
+  function showState(state) {
+    const stateButton = document.getElementById("stateButton");
+    const stateButtonRight = document.getElementById("stateButtonRight");
+    const stateLogin = document.getElementById("stateLogin");
+    const stateEdt = document.getElementById("stateEdt");
+    const stateEdtRight = document.getElementById("stateEdtRight");
+    const welcomeZone = document.getElementById("welcomeZone");
+    stateButton.style.display = "none";
+    if (stateButtonRight) stateButtonRight.style.display = "none";
+    stateLogin.style.display = "none";
+    stateEdt.style.display = "none";
+    if (stateEdtRight) stateEdtRight.style.display = "none";
+    welcomeZone.style.display = "none";
+    if (state === "button") { stateButton.style.display = "flex"; if (stateButtonRight) stateButtonRight.style.display = "flex"; }
+    else if (state === "login") { stateLogin.style.display = "flex"; }
+    else if (state === "edt") { stateEdt.style.display = "flex"; if (stateEdtRight) stateEdtRight.style.display = "flex"; welcomeZone.style.display = "block"; }
+  }
+
+  function getSurnom(id) {
+    const m = MEMBRES_DATA.find(m => m.id === id);
+    return m ? m.surnom : id;
+  }
+
+  let currentMembreId = null;
+  let currentIsAdmin = false;
+  let currentPseudo = "";
+
+  async function restoreSession() {
+    const savedId = sessionStorage.getItem("membreId");
+    const savedAdmin = sessionStorage.getItem("isAdmin");
+    if (savedId && savedAdmin !== null) {
+      currentMembreId = savedId;
+      currentIsAdmin = savedAdmin === "true";
+      currentPseudo = getSurnom(savedId);
+      try {
+        const snap = await getDoc(doc(db, "membres", savedId));
+        if (snap.exists() && snap.data().pseudo) {
+          currentPseudo = snap.data().pseudo;
+        }
+      } catch (e) {}
+      // Charger le pseudo Firestore de la session dans le pseudo-text de la carte
+        const square = document.querySelector(`.square[data-member-id="${savedId}"]`);
+        if (square) {
+        const span = square.querySelector('.pseudo-text');
+        if (span) span.textContent = currentPseudo;
+        }
+      showState("edt");
+      const welcome = document.getElementById("welcomeMessage");
+      welcome.textContent = currentIsAdmin ? "Bienvenue Admin " + getNickname(currentPseudo) : "Bienvenue " + getNickname(currentPseudo);
+      if (currentPseudo !== getSurnom(savedId)) {
+        updateValorantTag(savedId, currentPseudo);
+      }
+      setupTeamPointsEdit();
+      if (window.__updatePseudoEditButtons) window.__updatePseudoEditButtons();
+    }
+  }
+
+  document.getElementById("btnModifier").addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("mdpInput").value = "";
+    document.getElementById("loginError").textContent = "";
+    showState("login");
+  });
+
+  document.getElementById("btnFermerLogin").addEventListener("click", (e) => {
+    e.preventDefault();
+    showState("button");
+  });
+
+  document.getElementById("btnValider").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const mdp = document.getElementById("mdpInput").value.trim();
+    if (!mdp) return;
+
+    const qAdmin = query(collection(db, "membres"), where("mdp_admin", "==", mdp));
+    const adminSnapshot = await getDocs(qAdmin);
+    let membreId = null;
+    let isAdmin = false;
+
+    if (adminSnapshot.size > 0) {
+      membreId = adminSnapshot.docs[0].id;
+      isAdmin = true;
+    } else {
+      const q = query(collection(db, "membres"), where("mdp", "==", mdp));
+      const snapshot = await getDocs(q);
+      if (snapshot.size > 0) {
+        membreId = snapshot.docs[0].id;
+        isAdmin = false;
+      }
+    }
+
+    if (!membreId) {
+      document.getElementById("loginError").textContent = "Mot de passe incorrect";
+      return;
+    }
+
+    currentMembreId = membreId;
+    currentIsAdmin = isAdmin;
+    sessionStorage.setItem("membreId", currentMembreId);
+    sessionStorage.setItem("isAdmin", currentIsAdmin);
+
+    currentPseudo = getSurnom(membreId);
+    try {
+      const snap = await getDoc(doc(db, "membres", membreId));
+      if (snap.exists() && snap.data().pseudo) {
+        currentPseudo = snap.data().pseudo;
+      }
+    } catch (e) {}
+
+    showState("edt");
+    const welcome = document.getElementById("welcomeMessage");
+    welcome.textContent = isAdmin ? "Bienvenue Admin " + getNickname(currentPseudo) : "Bienvenue " + getNickname(currentPseudo);
+    if (currentPseudo !== getSurnom(membreId)) {
+      updateValorantTag(membreId, currentPseudo);
+    }
+    setupTeamPointsEdit();
+    if (window.__updatePseudoEditButtons) window.__updatePseudoEditButtons();
+  });
+
+  document.getElementById("btnDeconnexion").addEventListener("click", (e) => {
+    e.preventDefault();
+    currentMembreId = null;
+    currentIsAdmin = false;
+    currentPseudo = "";
+    sessionStorage.removeItem("membreId");
+    sessionStorage.removeItem("isAdmin");
+    setupTeamPointsEdit();
+    if (window.__updatePseudoEditButtons) window.__updatePseudoEditButtons();
+    showState("button");
+  });
+
+  function getNickname(val) {
+    const idx = val.indexOf('#');
+    return idx >= 0 ? val.substring(0, idx).trim() : val.trim();
+  }
+  function updateValorantTag(membreId, newPseudo) {
+    const square = document.querySelector(`.square[data-member-id="${membreId}"]`);
+    if (!square) return;
+    const span = square.querySelector('.pseudo-text');
+    if (span) span.textContent = newPseudo;
+  }
+
+  document.getElementById("mdpInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") document.getElementById("btnValider").click();
+  });
+
+  // --- Team points ---
+  let teamWins = null, teamLosses = null;
+
+  async function loadTeamPoints() {
+    try {
+      const snap = await getDoc(doc(db, "equipe", "stats"));
+      if (snap.exists()) {
+        const d = snap.data();
+        teamWins = d.wins != null ? d.wins : null;
+        teamLosses = d.losses != null ? d.losses : null;
+      }
+    } catch (e) {}
+    updateTeamPointsDisplay();
+  }
+
+  function updateTeamPointsDisplay() {
+    document.getElementById("teamPointsText").textContent =
+      (teamWins != null ? teamWins : "???") + " / " + (teamLosses != null ? teamLosses : "???");
+  }
+
+  function showTeamPointsEdit(show) {
+    document.getElementById("teamPointsText").style.display = show ? "none" : "inline";
+    document.getElementById("teamPointsInputs").style.display = show ? "inline" : "none";
+    document.getElementById("btnEditTeamPoints").style.display = show ? "none" : (currentIsAdmin ? "inline-block" : "none");
+    if (show) {
+      document.getElementById("teamWinsInput").value = teamWins != null ? teamWins : "";
+      document.getElementById("teamLossesInput").value = teamLosses != null ? teamLosses : "";
+    }
+  }
+
+  function setupTeamPointsEdit() {
+    document.getElementById("btnEditTeamPoints").style.display = currentIsAdmin ? "inline-block" : "none";
+    showTeamPointsEdit(false);
+  }
+
+  document.getElementById("btnEditTeamPoints").addEventListener("click", (e) => {
+    e.preventDefault();
+    showTeamPointsEdit(true);
+    document.getElementById("teamWinsInput").focus();
+  });
+
+  document.getElementById("btnSaveTeamPoints").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const w = parseInt(document.getElementById("teamWinsInput").value);
+    const l = parseInt(document.getElementById("teamLossesInput").value);
+    if (isNaN(w) || isNaN(l)) return;
+    try {
+      await setDoc(doc(db, "equipe", "stats"), { wins: w, losses: l });
+      teamWins = w;
+      teamLosses = l;
+    } catch (e) {}
+    updateTeamPointsDisplay();
+    showTeamPointsEdit(false);
+  });
+
+  document.getElementById("btnCancelTeamPoints").addEventListener("click", (e) => {
+    e.preventDefault();
+    showTeamPointsEdit(false);
+  });
+
+  document.getElementById("teamWinsInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") document.getElementById("btnSaveTeamPoints").click();
+  });
+  document.getElementById("teamLossesInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") document.getElementById("btnSaveTeamPoints").click();
+  });
+
+  // --- Agent config Firestore ---
+  const NAME_TO_ID = {
+    "Morgane": "morgane",
+    "Enzo": "enzo",
+    "Jules": "jules",
+    "Sébastien": "sebastien",
+    "Orphée": "orphee",
+    "Octave": "octave",
+    "Clément": "clement"
+  };
+
+  window.__agentConfigs = {};
+
+  async function loadAgentConfigs() {
+    try {
+      const snapshot = await getDocs(collection(db, "membres"));
+      snapshot.forEach(doc => {
+        if (doc.data().agents) {
+          const entry = Object.entries(NAME_TO_ID).find(([, id]) => id === doc.id);
+          if (entry) {
+            window.__agentConfigs[entry[0]] = doc.data().agents;
+          }
+        }
+      });
+    } catch (e) {
+      console.error("Erreur chargement agents", e);
+    }
+    if (window.__restoreSaved) window.__restoreSaved();
+  }
+
+  window.__saveAgentConfig = async function(name, config) {
+    const id = NAME_TO_ID[name];
+    if (!id) return;
+    const savedId = sessionStorage.getItem("membreId");
+    const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+    if (!savedId) {
+      alert("Vous ne pouvez modifier que votre propre carte.");
+      return;
+    }
+    if (savedId !== id && !isAdmin) {
+      alert("Vous ne pouvez modifier que votre propre carte.");
+      return;
+    }
+    try {
+      await setDoc(doc(db, "membres", id), { agents: config }, { merge: true });
+      window.__agentConfigs[name] = config;
+    } catch (e) {
+      console.error("Erreur sauvegarde agent", e);
+    }
+  };
+
+  window.__saveMemberPseudo = async function(memberId, newPseudo) {
+    try {
+        await setDoc(doc(db, "membres", memberId), { pseudo: newPseudo }, { merge: true });
+        if (memberId === currentMembreId) {
+        currentPseudo = newPseudo;
+        const welcome = document.getElementById("welcomeMessage");
+        welcome.textContent = currentIsAdmin ? "Bienvenue Admin " + getNickname(newPseudo) : "Bienvenue " + getNickname(newPseudo);
+        }
+    } catch (e) {
+        console.error("Erreur sauvegarde pseudo", e);
+    }
+    };
+
+  // --- Role config Firestore ---
+  window.__roleConfigs = {};
+
+  async function loadRoles() {
+    try {
+      const snapshot = await getDocs(collection(db, "membres"));
+      snapshot.forEach(doc => {
+        if (doc.data().role) {
+          const entry = Object.entries(NAME_TO_ID).find(([, id]) => id === doc.id);
+          if (entry) {
+            window.__roleConfigs[entry[0]] = doc.data().role;
+          }
+        }
+      });
+    } catch (e) {
+      console.error("Erreur chargement roles", e);
+    }
+    applyRolesToSelects();
+  }
+
+  function applyRolesToSelects() {
+    document.querySelectorAll('.role-select').forEach(select => {
+      const member = select.closest('.square').querySelector('.square-title').textContent.trim();
+      if (window.__roleConfigs[member]) {
+        select.value = window.__roleConfigs[member];
+      }
+    });
+  }
+
+  window.__saveRole = async function(name, role) {
+    const id = NAME_TO_ID[name];
+    if (!id) return;
+    const savedId = sessionStorage.getItem("membreId");
+    const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+    if (!savedId) {
+      alert("Vous ne pouvez modifier que votre propre rôle.");
+      return;
+    }
+    if (savedId !== id && !isAdmin) {
+      alert("Vous ne pouvez modifier que votre propre rôle.");
+      return;
+    }
+    try {
+      await setDoc(doc(db, "membres", id), { role: role }, { merge: true });
+      window.__roleConfigs[name] = role;
+    } catch (e) {
+      console.error("Erreur sauvegarde rôle", e);
+    }
+  };
+
+  showState("button");
+
+  loadAgentConfigs();
+  loadRoles();
+
+  loadTeamPoints();
+  restoreSession();
+  // Run setupTeamPointsEdit after restore in case session is restored (it's also called inside restoreSession)
+  if (!sessionStorage.getItem("membreId")) setupTeamPointsEdit();
+</script>
+        
+</body>
+</html>
