@@ -328,7 +328,10 @@
             <button class="btn" id="btnModifier">Modifier votre présence</button>
         </div>
         <div id="stateLogin" style="display:none;">
-            <input type="password" id="mdpInput" placeholder="Mot de passe">
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">
+                <input type="password" id="mdpInput" placeholder="Mot de passe">
+                <button type="button" id="btnToggleMdp" title="Afficher / masquer le mot de passe" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:5px;color:#fff;cursor:pointer;padding:10px 12px;font-size:1rem;">&#128065;</button>
+            </div>
             <button class="btn" id="btnValider">Valider</button>
             <button class="btn btn-secondary" id="btnFermerLogin">Fermer</button>
             <p id="loginError"></p>
@@ -978,6 +981,13 @@
         btnFermerLogin.addEventListener("click", () => showState("button"));
         mdpInput.addEventListener("keydown", (e) => {
             if (e.key === "Enter") btnValider.click();
+        });
+        document.getElementById("btnToggleMdp").addEventListener("click", () => {
+            const input = document.getElementById("mdpInput");
+            const btn = document.getElementById("btnToggleMdp");
+            const show = input.type === "password";
+            input.type = show ? "text" : "password";
+            btn.innerHTML = show ? "&#128064;" : "&#128065;";
         });
         btnDeconnexion.addEventListener("click", () => {
             currentMembreId = null;
