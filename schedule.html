@@ -414,24 +414,31 @@
         async function seedFirestore() {
             try {
                 const snapshot = await getDocs(collection(db, "membres"));
-                if (snapshot.size > 0) return;
+                const existing = new Set(snapshot.docs.map(d => d.id));
+                let created = 0;
 
                 for (const m of MEMBRES_DATA) {
-                    let edt = {};
-                    const semaineKey = getWeekKey(0);
-                    edt[semaineKey] = {};
-                    for (const jour of JOURS) {
-                        edt[semaineKey][jour] = { statut: "absent_reponse", contrainte: "" };
-                    }
-                    await setDoc(doc(db, "membres", m.id), {
+                    const data = {
                         nom: m.nom,
                         mdp: m.mdp,
-                            ...(m.mdp_admin ? { mdp_admin: m.mdp_admin } : {}),
-                        role: "principal",
-                        edt
-                    });
+                        ...(m.mdp_admin ? { mdp_admin: m.mdp_admin } : {})
+                    };
+                    if (!existing.has(m.id)) {
+                        // Nouveau membre : on crée aussi l'edt par défaut
+                        let edt = {};
+                        const semaineKey = getWeekKey(0);
+                        edt[semaineKey] = {};
+                        for (const jour of JOURS) {
+                            edt[semaineKey][jour] = { statut: "absent_reponse", contrainte: "" };
+                        }
+                        data.edt = edt;
+                        data.role = "principal";
+                        created++;
+                    }
+                    // merge:true => met à jour nom/mdp/mdp_admin sans écraser edt/pseudo/agents
+                    await setDoc(doc(db, "membres", m.id), data, { merge: true });
                 }
-                console.log("Firestore peupl\u00e9 avec les 7 membres");
+                console.log("Firestore synchronis\u00e9 (" + created + " nouveaux, mot de passe mis \u00e0 jour)");
             } catch (e) {
                 console.error("Erreur seed Firestore :", e);
             }
