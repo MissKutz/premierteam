@@ -1713,20 +1713,28 @@
     if (!mdp) return;
 
     const qAdmin = query(collection(db, "membres"), where("mdp_admin", "==", mdp));
-    const adminSnapshot = await getDocs(qAdmin);
     let membreId = null;
     let isAdmin = false;
 
-    if (adminSnapshot.size > 0) {
-      membreId = adminSnapshot.docs[0].id;
-      isAdmin = true;
-    } else {
-      const q = query(collection(db, "membres"), where("mdp", "==", mdp));
-      const snapshot = await getDocs(q);
-      if (snapshot.size > 0) {
-        membreId = snapshot.docs[0].id;
-        isAdmin = false;
+    try {
+      const adminSnapshot = await getDocs(qAdmin);
+
+      if (adminSnapshot.size > 0) {
+        membreId = adminSnapshot.docs[0].id;
+        isAdmin = true;
+      } else {
+        const q = query(collection(db, "membres"), where("mdp", "==", mdp));
+        const snapshot = await getDocs(q);
+        if (snapshot.size > 0) {
+          membreId = snapshot.docs[0].id;
+          isAdmin = false;
+        }
       }
+    } catch (e) {
+      console.error("Erreur connexion Firestore :", e);
+      document.getElementById("loginError").textContent =
+        "Erreur de connexion à Firebase (règles/permissions ?). Voir la console.";
+      return;
     }
 
     if (!membreId) {
