@@ -405,7 +405,7 @@
             { id: "jules", nom: "Jules", surnom: "FDM", mdp: "julesf0128" },
             { id: "sebastien", nom: "Sébastien", surnom: "Pollux", mdp: "Honda06+" },
             { id: "orphee", nom: "Orphée", surnom: "Orphée", mdp: "jemeraivoiralexiaenrobedechambre69" },
-            { id: "octave", nom: "Octave", surnom: "sacadUwU", mdp: "motdepasse.1" },
+            { id: "romain", nom: "Romain", surnom: "Arracheur2slibar", mdp: "romain2008" },
             { id: "clement", nom: "Clément", surnom: "Clemrsse", mdp: "clemrsse123" }
         ];
 
@@ -452,7 +452,6 @@
                 const data = d.data();
                 if (!data.edt) continue;
                 const hasNewFormat = Object.keys(data.edt).some(k => /^\d{4}-\d{2}-\d{2}$/.test(k));
-                // Si edt a des clés comme "lundi", "mardi"... (ancien format) et PAS de nouveau format
                 if (!hasNewFormat && data.edt.lundi && typeof data.edt.lundi === "object" && data.edt.lundi.statut) {
                     const newEdt = { [semaineKey]: {} };
                     for (const jour of JOURS) {
